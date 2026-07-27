@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Plate — Daily Tracker</title>
+<meta name="description" content="A clean, personal calorie and macro tracker.">
+<meta name="theme-color" content="#2F3EF6">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar__inner">
+    <div class="mark" aria-label="Plate">
+      <svg viewBox="0 0 40 24" width="34" height="20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 12L12 0V8L6 12L12 16V24L0 12Z" fill="currentColor"/>
+        <rect x="18" y="0" width="4" height="24" fill="currentColor"/>
+        <path d="M40 12L28 24V16L34 12L28 8V0L40 12Z" fill="currentColor"/>
+      </svg>
+    </div>
+    <nav class="tabs" role="tablist">
+      <button class="tab is-active" data-view="dashboard" role="tab" aria-selected="true">Today</button>
+      <button class="tab" data-view="history" role="tab" aria-selected="false">History</button>
+      <button class="tab" data-view="settings" role="tab" aria-selected="false">Settings</button>
+    </nav>
+  </div>
+</header>
+
+<main id="app">
+
+  <!-- DASHBOARD VIEW -->
+  <section class="view is-active" id="view-dashboard">
+
+    <div class="hero">
+      <p class="eyebrow" id="today-date">Monday, 27 July</p>
+      <div class="hero__stat">
+        <span class="bignum" id="kcal-remaining">2250</span>
+        <span class="bignum__label">kcal left today</span>
+      </div>
+      <div class="track">
+        <div class="track__fill" id="kcal-track-fill"></div>
+      </div>
+      <p class="track__meta"><span id="kcal-eaten">0</span> eaten of <span id="kcal-budget">2250</span> kcal budget</p>
+    </div>
+
+    <div class="macrorow">
+      <div class="macro">
+        <span class="macro__num" id="protein-num">0</span><span class="macro__unit">g</span>
+        <span class="macro__label">protein <span class="macro__target">/ <span id="protein-target">155</span>g</span></span>
+      </div>
+      <div class="macro">
+        <span class="macro__num" id="carbs-num">0</span><span class="macro__unit">g</span>
+        <span class="macro__label">carbs</span>
+      </div>
+      <div class="macro">
+        <span class="macro__num" id="fat-num">0</span><span class="macro__unit">g</span>
+        <span class="macro__label">fat</span>
+      </div>
+    </div>
+
+    <button class="btn-primary" id="btn-add-food">Log food</button>
+
+    <div class="section-head">
+      <h2>Today's log</h2>
+      <button class="link-muted" id="btn-reset-day">Reset day</button>
+    </div>
+
+    <ul class="loglist" id="loglist">
+      <li class="empty" id="loglist-empty">Nothing logged yet. Tap "Log food" to add your first meal.</li>
+    </ul>
+
+  </section>
+
+  <!-- HISTORY VIEW -->
+  <section class="view" id="view-history">
+    <div class="hero hero--compact">
+      <p class="eyebrow">Past days</p>
+      <h1 class="pagetitle">History</h1>
+    </div>
+    <ul class="histlist" id="histlist">
+      <li class="empty">No history yet, come back after logging a few days.</li>
+    </ul>
+  </section>
+
+  <!-- SETTINGS VIEW -->
+  <section class="view" id="view-settings">
+    <div class="hero hero--compact">
+      <p class="eyebrow">Your targets</p>
+      <h1 class="pagetitle">Settings</h1>
+    </div>
+    <div class="form">
+      <label class="field">
+        <span>Daily calorie budget</span>
+        <input type="number" id="input-kcal-budget" inputmode="numeric">
+      </label>
+      <label class="field">
+        <span>Protein target (g)</span>
+        <input type="number" id="input-protein-target" inputmode="numeric">
+      </label>
+      <label class="field">
+        <span>Carb target (g, optional)</span>
+        <input type="number" id="input-carbs-target" inputmode="numeric">
+      </label>
+      <label class="field">
+        <span>Fat target (g, optional)</span>
+        <input type="number" id="input-fat-target" inputmode="numeric">
+      </label>
+      <button class="btn-primary" id="btn-save-settings">Save</button>
+      <p class="savedmsg" id="settings-saved">Saved</p>
+    </div>
+    <div class="section-head" style="margin-top:48px;">
+      <h2>Data</h2>
+    </div>
+    <button class="link-muted" id="btn-export-data">Export all data (JSON)</button>
+    <button class="link-muted link-danger" id="btn-clear-data">Erase all data</button>
+  </section>
+
+</main>
+
+<!-- ADD FOOD PANEL -->
+<div class="sheet" id="sheet-add" aria-hidden="true">
+  <div class="sheet__inner">
+    <div class="sheet__head">
+      <h2>Log food</h2>
+      <button class="sheet__close" id="btn-close-sheet" aria-label="Close">&times;</button>
+    </div>
+    <input type="search" class="search" id="food-search" placeholder="Search e.g. roti, paneer, pizza..." autocomplete="off">
+    <p class="search__hint" id="search-hint">Showing home food. Keep typing to search everything online.</p>
+    <ul class="resultslist" id="resultslist"></ul>
+  </div>
+</div>
+
+<!-- QUANTITY PANEL -->
+<div class="sheet" id="sheet-qty" aria-hidden="true">
+  <div class="sheet__inner sheet__inner--small">
+    <div class="sheet__head">
+      <h2 id="qty-food-name">Food</h2>
+      <button class="sheet__close" id="btn-close-qty" aria-label="Close">&times;</button>
+    </div>
+    <p class="qty-serving" id="qty-serving-label">1 serving</p>
+    <div class="stepper">
+      <button class="stepper__btn" id="qty-minus">&minus;</button>
+      <span class="stepper__val" id="qty-val">1</span>
+      <button class="stepper__btn" id="qty-plus">&plus;</button>
+    </div>
+    <p class="qty-preview" id="qty-preview">0 kcal · 0g protein</p>
+    <button class="btn-primary" id="btn-confirm-add">Add to log</button>
+  </div>
+</div>
+
+<div class="scrim" id="scrim"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
