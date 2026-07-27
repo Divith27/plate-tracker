@@ -77,6 +77,14 @@
       <li class="empty" id="loglist-empty">Nothing logged yet. Tap "Log food" to add your first meal.</li>
     </ul>
 
+    <div class="section-head" style="margin-top:40px;">
+      <h2>Today's workout</h2>
+    </div>
+    <div class="workoutstatus" id="workoutstatus">
+      <p class="track__meta" id="workoutstatus-empty">No workout picked for today.</p>
+      <button class="btn-primary" id="btn-pick-workout">Log workout</button>
+    </div>
+
   </section>
 
   <!-- HISTORY VIEW -->
@@ -207,6 +215,36 @@
 </div>
 
 <div class="scrim" id="scrim"></div>
+
+<!-- WORKOUT PICKER -->
+<div class="sheet" id="sheet-workout-picker" aria-hidden="true">
+  <div class="sheet__inner">
+    <div class="sheet__head">
+      <h2>Pick today's workout</h2>
+      <button class="sheet__close" id="btn-close-workout-picker" aria-label="Close">&times;</button>
+    </div>
+    <div class="tilegrid">
+      <button class="tile" data-workout="upper_a">Upper A</button>
+      <button class="tile" data-workout="upper_b">Upper B</button>
+      <button class="tile" data-workout="lower_a">Lower A</button>
+      <button class="tile" data-workout="lower_b">Lower B</button>
+      <button class="tile" data-workout="ab">Ab &amp; Core</button>
+      <button class="tile" data-workout="cardio">Cardio</button>
+    </div>
+  </div>
+</div>
+
+<!-- WORKOUT CHECKLIST -->
+<div class="sheet" id="sheet-workout-checklist" aria-hidden="true">
+  <div class="sheet__inner">
+    <div class="sheet__head">
+      <h2 id="checklist-title">Workout</h2>
+      <button class="sheet__close" id="btn-close-checklist" aria-label="Close">&times;</button>
+    </div>
+    <ul class="checklist" id="checklist"></ul>
+    <button class="link-muted" id="btn-change-workout" style="margin-top:18px;">Change workout type for today</button>
+  </div>
+</div>
 
 <script src="app.js"></script>
 </body>
