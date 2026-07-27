@@ -1,7 +1,7 @@
 {
   "version": 2,
   "source": "curated-indian",
-  "categories": ["staple", "dal_legume", "sabzi", "dairy_protein", "snack", "street_food", "sweet", "fruit", "nuts_seeds", "beverage", "condiment", "dinner_rotation", "restaurant"],
+  "categories": ["staple", "dal_legume", "sabzi", "dairy_protein", "snack", "street_food", "sweet", "fruit", "nuts_seeds", "beverage", "condiment", "dinner_rotation", "restaurant", "protein_brand"],
   "foods": [
     {"id": "roti", "name": "Roti / Chapati", "category": "staple", "serving": "1 piece (~40g)", "kcal": 104, "protein": 3, "carbs": 20, "fat": 1.2},
     {"id": "thepla", "name": "Thepla", "category": "staple", "serving": "1 piece (~40g)", "kcal": 130, "protein": 3, "carbs": 18, "fat": 5},
@@ -164,6 +164,27 @@
     {"id": "dominos_choco_lava", "name": "Domino's Choco Lava Cake", "category": "restaurant", "serving": "1 piece (~65g)", "kcal": 300, "protein": 4, "carbs": 40, "fat": 14},
 
     {"id": "pizza_express_veg", "name": "Pizza Express Veg Pizza (Regular)", "category": "restaurant", "serving": "1 regular pizza (whole)", "kcal": 650, "protein": 22, "carbs": 78, "fat": 26},
-    {"id": "sandwizza_grilled_cheese", "name": "Sandwizza Grilled Veg Cheese Sandwich", "category": "restaurant", "serving": "1 sandwich", "kcal": 320, "protein": 10, "carbs": 34, "fat": 15}
+    {"id": "sandwizza_grilled_cheese", "name": "Sandwizza Grilled Veg Cheese Sandwich", "category": "restaurant", "serving": "1 sandwich", "kcal": 320, "protein": 10, "carbs": 34, "fat": 15},
+
+    {"id": "superyou_wafer_chocolate", "name": "SuperYou Protein Wafer - Chocolate", "category": "protein_brand", "serving": "1 bar (40g, 10g protein)", "kcal": 188, "protein": 10, "carbs": 20, "fat": 10},
+    {"id": "superyou_wafer_peanut_butter", "name": "SuperYou Protein Wafer - Peanut Butter", "category": "protein_brand", "serving": "1 bar (40g, 10g protein)", "kcal": 188, "protein": 10, "carbs": 20, "fat": 10},
+    {"id": "superyou_wafer_coffee", "name": "SuperYou Protein Wafer - Coffee", "category": "protein_brand", "serving": "1 bar (40g, 10g protein)", "kcal": 187, "protein": 10, "carbs": 20, "fat": 10},
+    {"id": "superyou_wafer_cheese", "name": "SuperYou Protein Wafer - Cheese", "category": "protein_brand", "serving": "1 bar (40g, 10g protein)", "kcal": 188, "protein": 10, "carbs": 20, "fat": 10},
+    {"id": "superyou_wafer_strawberry", "name": "SuperYou Protein Wafer - Strawberry Crème", "category": "protein_brand", "serving": "1 bar (40g, 10g protein)", "kcal": 188, "protein": 10, "carbs": 20, "fat": 10},
+    {"id": "superyou_wafer_mini", "name": "SuperYou Protein Wafer Mini (any flavor)", "category": "protein_brand", "serving": "1 piece (20g, 5g protein)", "kcal": 95, "protein": 5, "carbs": 10, "fat": 5},
+    {"id": "superyou_mega_20g", "name": "SuperYou 20g Mega Protein Wafer - Nutty Chocolate", "category": "protein_brand", "serving": "1 bar (~60g, 20g protein, estimated)", "kcal": 280, "protein": 20, "carbs": 24, "fat": 14},
+
+    {"id": "maxprotein_bar_10g", "name": "Max Protein Bar (10g, standard flavors)", "category": "protein_brand", "serving": "1 bar (~50g)", "kcal": 173, "protein": 10, "carbs": 27, "fat": 5.8},
+    {"id": "maxprotein_ultimate_30g", "name": "Max Protein Ultimate Bar (30g, Choco Almond/Berry)", "category": "protein_brand", "serving": "1 bar (100g)", "kcal": 361, "protein": 30, "carbs": 44, "fat": 14.7},
+    {"id": "maxprotein_peanut_butter_20g", "name": "Max Protein Peanut Butter Bar (20g, estimated)", "category": "protein_brand", "serving": "1 bar (~70g)", "kcal": 280, "protein": 20, "carbs": 30, "fat": 10},
+    {"id": "maxprotein_cookie_choco_chip", "name": "Max Protein Cookie - Choco Chips", "category": "protein_brand", "serving": "1 cookie (55g)", "kcal": 263, "protein": 10, "carbs": 25, "fat": 13},
+    {"id": "maxprotein_7grain_cookie", "name": "Max Protein 7 Grain Breakfast Cookie (estimated)", "category": "protein_brand", "serving": "1 cookie (~55g)", "kcal": 250, "protein": 10, "carbs": 30, "fat": 9},
+
+    {"id": "wholetruth_double_cocoa", "name": "The Whole Truth Protein Bar - Double Cocoa", "category": "protein_brand", "serving": "1 bar (52g, 13.3g protein)", "kcal": 256, "protein": 13.3, "carbs": 19.6, "fat": 13.8},
+    {"id": "wholetruth_peanut_cocoa", "name": "The Whole Truth Protein Bar - Peanut Cocoa", "category": "protein_brand", "serving": "1 bar (52g, 15g protein)", "kcal": 244, "protein": 15, "carbs": 21.4, "fat": 11},
+    {"id": "wholetruth_hazelnut_20g", "name": "The Whole Truth 20g Protein Bar - Hazelnut Cocoa (estimated)", "category": "protein_brand", "serving": "1 bar (67g)", "kcal": 310, "protein": 20, "carbs": 25, "fat": 15},
+    {"id": "wholetruth_mini", "name": "The Whole Truth Mini Protein Bar (any flavor)", "category": "protein_brand", "serving": "1 mini bar (27g)", "kcal": 129, "protein": 6, "carbs": 15, "fat": 6},
+
+    {"id": "milkymist_skyr", "name": "Milky Mist Skyr High Protein Plain Yogurt", "category": "protein_brand", "serving": "100g", "kcal": 100, "protein": 12, "carbs": 10, "fat": 1.5}
   ]
 }
