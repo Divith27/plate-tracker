@@ -1,4 +1,4 @@
-var CACHE_NAME = "plate-cache-v1";
+var CACHE_NAME = "plate-cache-v2";
 var SHELL = [
   "./",
   "./index.html",
@@ -7,7 +7,9 @@ var SHELL = [
   "./foods.json",
   "./manifest.json",
   "./icons/icon-192.png",
-  "./icons/icon-512.png"
+  "./icons/icon-512.png",
+  "./icons/logo.svg",
+  "./icons/favicon.png"
 ];
 
 self.addEventListener("install", function (event) {
