@@ -4,7 +4,8 @@
   // ---------------- Constants ----------------
   var STORAGE_LOGS = "plate_logs_v1";
   var STORAGE_SETTINGS = "plate_settings_v1";
-  var DEFAULT_SETTINGS = { kcalBudget: 2250, proteinTarget: 155, carbsTarget: null, fatTarget: null };
+  var STORAGE_CUSTOM = "plate_custom_foods_v1";
+  var DEFAULT_SETTINGS = { kcalBudget: 2250, proteinTarget: 155, carbsTarget: null, fatTarget: null, usdaApiKey: "" };
 
   var todayKey = function () {
     var d = new Date();
@@ -28,8 +29,28 @@
     settings: loadSettings(),
     logs: loadLogs(),
     curatedFoods: [],
+    customFoods: loadCustomFoods(),
+    categories: [],
+    activeCategory: "all",
     pendingFood: null, // {name, kcal, protein, carbs, fat, servingLabel}
     pendingQty: 1
+  };
+
+  function loadCustomFoods() {
+    try {
+      var raw = localStorage.getItem(STORAGE_CUSTOM);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) { return []; }
+  }
+  function saveCustomFoods() {
+    localStorage.setItem(STORAGE_CUSTOM, JSON.stringify(state.customFoods));
+  }
+
+  var CATEGORY_LABELS = {
+    all: "All", custom: "Your foods", staple: "Staples", dal_legume: "Dal & legumes", sabzi: "Sabzi",
+    dairy_protein: "Dairy & protein", snack: "Snacks", street_food: "Street food",
+    sweet: "Sweets", fruit: "Fruit", nuts_seeds: "Nuts & seeds", beverage: "Beverages",
+    condiment: "Condiments", dinner_rotation: "Dinner rotation"
   };
 
   function loadSettings() {
@@ -97,6 +118,19 @@
     foodSearch: $("food-search"),
     searchHint: $("search-hint"),
     resultslist: $("resultslist"),
+    chiprow: $("chiprow"),
+    inputUsdaKey: $("input-usda-key"),
+    btnAddCustom: $("btn-add-custom"),
+
+    sheetCustom: $("sheet-custom"),
+    btnCloseCustom: $("btn-close-custom"),
+    customName: $("custom-name"),
+    customServing: $("custom-serving"),
+    customKcal: $("custom-kcal"),
+    customProtein: $("custom-protein"),
+    customCarbs: $("custom-carbs"),
+    customFat: $("custom-fat"),
+    btnSaveCustom: $("btn-save-custom"),
 
     sheetQty: $("sheet-qty"),
     btnCloseQty: $("btn-close-qty"),
@@ -216,6 +250,7 @@
     els.inputProteinTarget.value = state.settings.proteinTarget;
     els.inputCarbsTarget.value = state.settings.carbsTarget || "";
     els.inputFatTarget.value = state.settings.fatTarget || "";
+    els.inputUsdaKey.value = state.settings.usdaApiKey || "";
   }
 
   els.btnSaveSettings.addEventListener("click", function () {
@@ -223,6 +258,7 @@
     state.settings.proteinTarget = parseInt(els.inputProteinTarget.value, 10) || DEFAULT_SETTINGS.proteinTarget;
     state.settings.carbsTarget = els.inputCarbsTarget.value ? parseInt(els.inputCarbsTarget.value, 10) : null;
     state.settings.fatTarget = els.inputFatTarget.value ? parseInt(els.inputFatTarget.value, 10) : null;
+    state.settings.usdaApiKey = els.inputUsdaKey.value.trim();
     saveSettings();
     renderDashboard();
     els.settingsSaved.classList.add("is-visible");
@@ -230,7 +266,7 @@
   });
 
   els.btnExportData.addEventListener("click", function () {
-    var data = { settings: state.settings, logs: state.logs };
+    var data = { settings: state.settings, logs: state.logs, customFoods: state.customFoods };
     var blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     var url = URL.createObjectURL(blob);
     var a = document.createElement("a");
@@ -241,10 +277,12 @@
   });
 
   els.btnClearData.addEventListener("click", function () {
-    if (!confirm("This erases every logged day and your settings, permanently. Continue?")) return;
+    if (!confirm("This erases every logged day, your custom foods, and your settings, permanently. Continue?")) return;
     localStorage.removeItem(STORAGE_LOGS);
     localStorage.removeItem(STORAGE_SETTINGS);
+    localStorage.removeItem(STORAGE_CUSTOM);
     state.logs = {};
+    state.customFoods = [];
     state.settings = Object.assign({}, DEFAULT_SETTINGS);
     renderDashboard();
     renderHistory();
@@ -260,15 +298,15 @@
   function closeSheet(sheetEl) {
     sheetEl.classList.remove("is-open");
     sheetEl.setAttribute("aria-hidden", "true");
-    if (!els.sheetAdd.classList.contains("is-open") && !els.sheetQty.classList.contains("is-open")) {
+    if (!els.sheetAdd.classList.contains("is-open") && !els.sheetQty.classList.contains("is-open") && !els.sheetCustom.classList.contains("is-open")) {
       els.scrim.classList.remove("is-open");
     }
   }
 
   els.btnAddFood.addEventListener("click", function () {
     els.foodSearch.value = "";
-    renderResults([]);
-    els.searchHint.textContent = "Showing home food. Keep typing to search everything online.";
+    state.activeCategory = "all";
+    renderChips();
     renderCuratedDefault();
     openSheet(els.sheetAdd);
     setTimeout(function () { els.foodSearch.focus(); }, 200);
@@ -278,11 +316,41 @@
   els.scrim.addEventListener("click", function () {
     closeSheet(els.sheetAdd);
     closeSheet(els.sheetQty);
+    closeSheet(els.sheetCustom);
   });
 
+  function renderChips() {
+    var cats = ["all"];
+    if (state.customFoods.length > 0) cats.push("custom");
+    cats = cats.concat(state.categories);
+    els.chiprow.innerHTML = "";
+    cats.forEach(function (cat) {
+      var btn = document.createElement("button");
+      btn.className = "chip" + (state.activeCategory === cat ? " is-active" : "");
+      btn.textContent = CATEGORY_LABELS[cat] || cat;
+      btn.addEventListener("click", function () {
+        state.activeCategory = cat;
+        renderChips();
+        if (els.foodSearch.value.trim().length === 0) renderCuratedDefault();
+      });
+      els.chiprow.appendChild(btn);
+    });
+  }
+
+  function allBrowsableFoods() {
+    return state.customFoods.map(function (f) { return Object.assign({}, f, { category: "custom" }); }).concat(state.curatedFoods);
+  }
+
+  function curatedByCategory() {
+    var all = allBrowsableFoods();
+    if (state.activeCategory === "all") return all;
+    return all.filter(function (f) { return f.category === state.activeCategory; });
+  }
+
   function renderCuratedDefault() {
-    var list = state.curatedFoods.slice(0, 12);
-    renderResults(list.map(function (f) { return Object.assign({ source: "home" }, f); }));
+    var list = curatedByCategory();
+    els.searchHint.textContent = list.length + " food" + (list.length === 1 ? "" : "s") + (state.activeCategory !== "all" ? " in " + CATEGORY_LABELS[state.activeCategory].toLowerCase() : "") + ". Type 3+ letters to also search online.";
+    renderResults(list.map(function (f) { return Object.assign({ source: f.category === "custom" ? "custom" : "home" }, f); }));
   }
 
   function renderResults(items) {
@@ -300,7 +368,7 @@
       li.innerHTML =
         '<div>' +
           '<div class="resultitem__name">' + escapeHtml(item.name) +
-            '<span class="resultitem__tag">' + (item.source === "home" ? "Home" : "OFF") + '</span>' +
+            '<span class="resultitem__tag">' + (item.source === "custom" ? "Yours" : item.source === "home" ? "Home" : item.source === "usda" ? "USDA" : "OFF") + '</span>' +
           '</div>' +
           '<div class="resultitem__meta">' + escapeHtml(item.serving) + ' · ' + Math.round(item.protein) + 'g protein</div>' +
         '</div>' +
@@ -315,19 +383,28 @@
     var q = els.foodSearch.value.trim().toLowerCase();
     if (q.length === 0) { renderCuratedDefault(); return; }
 
-    var curatedMatches = state.curatedFoods
+    var curatedMatches = curatedByCategory()
       .filter(function (f) { return f.name.toLowerCase().indexOf(q) !== -1; })
-      .map(function (f) { return Object.assign({ source: "home" }, f); });
+      .map(function (f) { return Object.assign({ source: f.category === "custom" ? "custom" : "home" }, f); });
 
     renderResults(curatedMatches);
+    els.searchHint.textContent = curatedMatches.length + " home match" + (curatedMatches.length === 1 ? "" : "es") + ". Searching online...";
 
     if (searchDebounce) clearTimeout(searchDebounce);
-    if (q.length < 3) return;
+    if (q.length < 3) { els.searchHint.textContent = curatedMatches.length + " home matches. Type at least 3 letters to also search online."; return; }
+
     searchDebounce = setTimeout(function () {
-      searchOpenFoodFacts(q).then(function (offItems) {
+      var usdaKey = (state.settings.usdaApiKey || "").trim();
+      var searches = [searchOpenFoodFacts(q)];
+      if (usdaKey) searches.push(searchUSDA(q, usdaKey));
+
+      Promise.allSettled(searches).then(function (results) {
         var currentQ = els.foodSearch.value.trim().toLowerCase();
         if (currentQ !== q) return; // stale response
-        renderResults(curatedMatches.concat(offItems));
+        var online = [];
+        results.forEach(function (r) { if (r.status === "fulfilled") online = online.concat(r.value); });
+        renderResults(curatedMatches.concat(online));
+        els.searchHint.textContent = curatedMatches.length + " home + " + online.length + " online result" + (online.length === 1 ? "" : "s") + ".";
       }).catch(function () {
         els.searchHint.textContent = "Couldn't reach the online database, showing home food only.";
       });
@@ -353,6 +430,29 @@
           source: "off"
         };
       }).filter(function (item) { return item.kcal > 0 && item.name !== "Unnamed product"; });
+    });
+  }
+
+  function searchUSDA(query, apiKey) {
+    var url = "https://api.nal.usda.gov/fdc/v1/foods/search?api_key=" + encodeURIComponent(apiKey) +
+      "&query=" + encodeURIComponent(query) + "&pageSize=8";
+    return fetch(url).then(function (r) { return r.json(); }).then(function (data) {
+      if (!data || !data.foods) return [];
+      return data.foods.map(function (f) {
+        var nutrient = function (name) {
+          var match = (f.foodNutrients || []).find(function (n) { return n.nutrientName === name; });
+          return match ? match.value : 0;
+        };
+        return {
+          name: f.description || "Unnamed food",
+          serving: "100g",
+          kcal: nutrient("Energy"),
+          protein: nutrient("Protein"),
+          carbs: nutrient("Carbohydrate, by difference"),
+          fat: nutrient("Total lipid (fat)"),
+          source: "usda"
+        };
+      }).filter(function (item) { return item.kcal > 0; });
     });
   }
 
@@ -402,6 +502,44 @@
     closeSheet(els.sheetAdd);
   });
 
+  // ---------------- Custom food ----------------
+  els.btnAddCustom.addEventListener("click", function () {
+    els.customName.value = "";
+    els.customServing.value = "";
+    els.customKcal.value = "";
+    els.customProtein.value = "";
+    els.customCarbs.value = "";
+    els.customFat.value = "";
+    openSheet(els.sheetCustom);
+  });
+  els.btnCloseCustom.addEventListener("click", function () { closeSheet(els.sheetCustom); });
+
+  els.btnSaveCustom.addEventListener("click", function () {
+    var name = els.customName.value.trim();
+    var kcal = parseFloat(els.customKcal.value);
+    if (!name || isNaN(kcal) || kcal <= 0) {
+      alert("Give it a name and a calorie amount at least.");
+      return;
+    }
+    var food = {
+      id: "custom_" + Date.now(),
+      name: name,
+      category: "custom",
+      serving: els.customServing.value.trim() || "1 serving",
+      kcal: kcal,
+      protein: parseFloat(els.customProtein.value) || 0,
+      carbs: parseFloat(els.customCarbs.value) || 0,
+      fat: parseFloat(els.customFat.value) || 0
+    };
+    state.customFoods.push(food);
+    saveCustomFoods();
+    closeSheet(els.sheetCustom);
+    state.activeCategory = "custom";
+    renderChips();
+    els.foodSearch.value = "";
+    renderCuratedDefault();
+  });
+
   // ---------------- Utils ----------------
   function escapeHtml(str) {
     var div = document.createElement("div");
@@ -412,10 +550,12 @@
   // ---------------- Boot ----------------
   fetch("foods.json").then(function (r) { return r.json(); }).then(function (data) {
     state.curatedFoods = data.foods.map(function (f) {
-      return { id: f.id, name: f.name, serving: f.serving, kcal: f.kcal, protein: f.protein, carbs: f.carbs, fat: f.fat };
+      return { id: f.id, name: f.name, category: f.category, serving: f.serving, kcal: f.kcal, protein: f.protein, carbs: f.carbs, fat: f.fat };
     });
+    state.categories = data.categories || [];
   }).catch(function () {
     state.curatedFoods = [];
+    state.categories = [];
   }).finally(function () {
     renderDashboard();
   });

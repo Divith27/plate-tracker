@@ -116,6 +116,17 @@
       <p class="savedmsg" id="settings-saved">Saved</p>
     </div>
     <div class="section-head" style="margin-top:48px;">
+      <h2>Search sources</h2>
+    </div>
+    <p class="track__meta" style="margin:0 0 14px;">Home food (124 items) always works offline. Online search uses Open Food Facts (no key needed) and, if you add a free key below, USDA FoodData Central too, better for generic foods like plain fruit, vegetables, and staples.</p>
+    <div class="form">
+      <label class="field">
+        <span>USDA FoodData Central API key (optional)</span>
+        <input type="text" id="input-usda-key" placeholder="Paste key here" autocomplete="off">
+      </label>
+      <a class="link-muted" href="https://fdc.nal.usda.gov/api-key-signup" target="_blank" rel="noopener" style="text-decoration:underline;">Get a free key (1 minute, no cost)</a>
+    </div>
+    <div class="section-head" style="margin-top:48px;">
       <h2>Data</h2>
     </div>
     <button class="link-muted" id="btn-export-data">Export all data (JSON)</button>
@@ -132,8 +143,47 @@
       <button class="sheet__close" id="btn-close-sheet" aria-label="Close">&times;</button>
     </div>
     <input type="search" class="search" id="food-search" placeholder="Search e.g. roti, paneer, pizza..." autocomplete="off">
-    <p class="search__hint" id="search-hint">Showing home food. Keep typing to search everything online.</p>
+    <div class="chiprow" id="chiprow"></div>
+    <p class="search__hint" id="search-hint">124 home foods loaded. Type 3+ letters to also search online.</p>
     <ul class="resultslist" id="resultslist"></ul>
+    <button class="link-muted" id="btn-add-custom" style="margin-top:16px;">+ Add a food that's not listed</button>
+  </div>
+</div>
+
+<!-- CUSTOM FOOD PANEL -->
+<div class="sheet" id="sheet-custom" aria-hidden="true">
+  <div class="sheet__inner">
+    <div class="sheet__head">
+      <h2>Add your own food</h2>
+      <button class="sheet__close" id="btn-close-custom" aria-label="Close">&times;</button>
+    </div>
+    <div class="form">
+      <label class="field">
+        <span>Food name</span>
+        <input type="text" id="custom-name" placeholder="e.g. Mom's mixed dal">
+      </label>
+      <label class="field">
+        <span>Serving description</span>
+        <input type="text" id="custom-serving" placeholder="e.g. 1 katori (~150g)">
+      </label>
+      <label class="field">
+        <span>Calories (kcal) for that serving</span>
+        <input type="number" id="custom-kcal" inputmode="decimal">
+      </label>
+      <label class="field">
+        <span>Protein (g)</span>
+        <input type="number" id="custom-protein" inputmode="decimal">
+      </label>
+      <label class="field">
+        <span>Carbs (g, optional)</span>
+        <input type="number" id="custom-carbs" inputmode="decimal">
+      </label>
+      <label class="field">
+        <span>Fat (g, optional)</span>
+        <input type="number" id="custom-fat" inputmode="decimal">
+      </label>
+      <button class="btn-primary" id="btn-save-custom">Save food</button>
+    </div>
   </div>
 </div>
 
