@@ -1,6 +1,22 @@
 (function () {
   "use strict";
 
+  // ---------------- Splash screen ----------------
+  (function () {
+    var splash = document.getElementById("splash");
+    if (!splash) return;
+    var removed = false;
+    var remove = function () {
+      if (removed) return;
+      removed = true;
+      splash.remove();
+    };
+    splash.addEventListener("animationend", function (e) {
+      if (e.animationName === "splashSlide") remove();
+    });
+    setTimeout(remove, 2200); // safety net in case animationend doesn't fire
+  })();
+
   // ---------------- Constants ----------------
   var STORAGE_LOGS = "plate_logs_v1";
   var STORAGE_SETTINGS = "plate_settings_v1";
@@ -50,7 +66,7 @@
     all: "All", custom: "Your foods", staple: "Staples", dal_legume: "Dal & legumes", sabzi: "Sabzi",
     dairy_protein: "Dairy & protein", snack: "Snacks", street_food: "Street food",
     sweet: "Sweets", fruit: "Fruit", nuts_seeds: "Nuts & seeds", beverage: "Beverages",
-    condiment: "Condiments", dinner_rotation: "Dinner rotation"
+    condiment: "Condiments", dinner_rotation: "Dinner rotation", restaurant: "Restaurant"
   };
 
   function loadSettings() {

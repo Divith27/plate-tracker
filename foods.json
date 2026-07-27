@@ -1,7 +1,7 @@
 {
   "version": 2,
   "source": "curated-indian",
-  "categories": ["staple", "dal_legume", "sabzi", "dairy_protein", "snack", "street_food", "sweet", "fruit", "nuts_seeds", "beverage", "condiment", "dinner_rotation"],
+  "categories": ["staple", "dal_legume", "sabzi", "dairy_protein", "snack", "street_food", "sweet", "fruit", "nuts_seeds", "beverage", "condiment", "dinner_rotation", "restaurant"],
   "foods": [
     {"id": "roti", "name": "Roti / Chapati", "category": "staple", "serving": "1 piece (~40g)", "kcal": 104, "protein": 3, "carbs": 20, "fat": 1.2},
     {"id": "thepla", "name": "Thepla", "category": "staple", "serving": "1 piece (~40g)", "kcal": 130, "protein": 3, "carbs": 18, "fat": 5},
@@ -137,6 +137,33 @@
     {"id": "veg_sandwich", "name": "Veg Sandwich (grilled)", "category": "dinner_rotation", "serving": "1 sandwich (2 slices)", "kcal": 280, "protein": 8, "carbs": 32, "fat": 13},
     {"id": "manchurian", "name": "Veg Manchurian (gravy)", "category": "dinner_rotation", "serving": "1 bowl (~200g)", "kcal": 300, "protein": 6, "carbs": 30, "fat": 17},
     {"id": "fried_rice", "name": "Veg Fried Rice", "category": "dinner_rotation", "serving": "1 plate (~250g)", "kcal": 380, "protein": 8, "carbs": 55, "fat": 13},
-    {"id": "noodles_hakka", "name": "Veg Hakka Noodles", "category": "dinner_rotation", "serving": "1 plate (~250g)", "kcal": 360, "protein": 8, "carbs": 52, "fat": 13}
+    {"id": "noodles_hakka", "name": "Veg Hakka Noodles", "category": "dinner_rotation", "serving": "1 plate (~250g)", "kcal": 360, "protein": 8, "carbs": 52, "fat": 13},
+
+    {"id": "bournvita_milk", "name": "Bournvita Milk", "category": "beverage", "serving": "1 glass (250ml milk + 2 tbsp)", "kcal": 230, "protein": 8, "carbs": 33, "fat": 6},
+    {"id": "choco_milkshake", "name": "Chocolate Milkshake", "category": "beverage", "serving": "1 glass (~300ml)", "kcal": 350, "protein": 8, "carbs": 45, "fat": 14},
+    {"id": "cold_coffee", "name": "Cold Coffee (cafe style)", "category": "beverage", "serving": "1 glass (~300ml)", "kcal": 200, "protein": 5, "carbs": 30, "fat": 6},
+
+    {"id": "dairy_milk", "name": "Cadbury Dairy Milk", "category": "sweet", "serving": "1 bar (~38g)", "kcal": 200, "protein": 2.7, "carbs": 22, "fat": 11},
+    {"id": "kitkat", "name": "KitKat (4-finger)", "category": "sweet", "serving": "1 bar (~38g)", "kcal": 210, "protein": 2.5, "carbs": 27, "fat": 10.5},
+    {"id": "ferrero_rocher", "name": "Ferrero Rocher", "category": "sweet", "serving": "1 piece (~12.5g)", "kcal": 73, "protein": 1, "carbs": 5, "fat": 5},
+    {"id": "chocolate_generic", "name": "Chocolate (generic)", "category": "sweet", "serving": "20g", "kcal": 105, "protein": 1.3, "carbs": 12, "fat": 6},
+
+    {"id": "mcd_mcveggie", "name": "McDonald's McVeggie Burger", "category": "restaurant", "serving": "1 burger (169g)", "kcal": 386, "protein": 9, "carbs": 56, "fat": 14},
+    {"id": "mcd_mcveggie_cheese", "name": "McDonald's McVeggie + Cheese", "category": "restaurant", "serving": "1 burger + cheese slice", "kcal": 430, "protein": 12, "carbs": 57, "fat": 18},
+    {"id": "mcd_mcaloo_tikki", "name": "McDonald's McAloo Tikki Burger", "category": "restaurant", "serving": "1 burger (146g)", "kcal": 334, "protein": 7, "carbs": 50, "fat": 12},
+    {"id": "mcd_mcspicy_paneer", "name": "McDonald's McSpicy Paneer Burger", "category": "restaurant", "serving": "1 burger (199g)", "kcal": 634, "protein": 20, "carbs": 54, "fat": 37},
+    {"id": "mcd_veg_pizza_mcpuff", "name": "McDonald's Veg Pizza McPuff", "category": "restaurant", "serving": "1 puff (87g)", "kcal": 228, "protein": 5.5, "carbs": 25, "fat": 11.5},
+    {"id": "mcd_mcflurry_oreo", "name": "McDonald's McFlurry Oreo (regular)", "category": "restaurant", "serving": "1 regular (147g)", "kcal": 211, "protein": 4, "carbs": 33, "fat": 7},
+    {"id": "mcd_fries_regular", "name": "McDonald's Fries (regular)", "category": "restaurant", "serving": "1 regular", "kcal": 340, "protein": 4, "carbs": 44, "fat": 17},
+
+    {"id": "dominos_cheeseburst_paneer_onion", "name": "Domino's Cheese Burst - Paneer & Onion (Regular)", "category": "restaurant", "serving": "1 regular pizza (whole)", "kcal": 855, "protein": 28, "carbs": 90, "fat": 38},
+    {"id": "dominos_farmhouse_cheeseburst", "name": "Domino's Farmhouse Cheese Burst (Regular)", "category": "restaurant", "serving": "1 regular pizza (whole)", "kcal": 939, "protein": 30, "carbs": 92, "fat": 42},
+    {"id": "dominos_peppy_paneer_cheeseburst", "name": "Domino's Peppy Paneer Cheese Burst (Regular)", "category": "restaurant", "serving": "1 regular pizza (whole)", "kcal": 1069, "protein": 34, "carbs": 94, "fat": 52},
+    {"id": "dominos_margherita_ht", "name": "Domino's Margherita Hand Tossed (Regular)", "category": "restaurant", "serving": "1 regular pizza (whole)", "kcal": 688, "protein": 24, "carbs": 82, "fat": 21},
+    {"id": "dominos_garlic_bread", "name": "Domino's Garlic Bread (Regular)", "category": "restaurant", "serving": "1 regular (4 pieces)", "kcal": 330, "protein": 8, "carbs": 40, "fat": 15},
+    {"id": "dominos_choco_lava", "name": "Domino's Choco Lava Cake", "category": "restaurant", "serving": "1 piece (~65g)", "kcal": 300, "protein": 4, "carbs": 40, "fat": 14},
+
+    {"id": "pizza_express_veg", "name": "Pizza Express Veg Pizza (Regular)", "category": "restaurant", "serving": "1 regular pizza (whole)", "kcal": 650, "protein": 22, "carbs": 78, "fat": 26},
+    {"id": "sandwizza_grilled_cheese", "name": "Sandwizza Grilled Veg Cheese Sandwich", "category": "restaurant", "serving": "1 sandwich", "kcal": 320, "protein": 10, "carbs": 34, "fat": 15}
   ]
 }

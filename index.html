@@ -16,6 +16,11 @@
 </head>
 <body>
 
+<div id="splash" aria-hidden="true">
+  <img src="icons/logo.svg" class="splash-logo splash-logo--white" alt="">
+  <img src="icons/logo.svg" class="splash-logo splash-logo--dark" alt="">
+</div>
+
 <header class="topbar">
   <div class="topbar__inner">
     <div class="mark" aria-label="Plate">
@@ -114,7 +119,7 @@
     <div class="section-head" style="margin-top:48px;">
       <h2>Search sources</h2>
     </div>
-    <p class="track__meta" style="margin:0 0 14px;">Home food (124 items) always works offline. Online search uses Open Food Facts (no key needed) and, if you add a free key below, USDA FoodData Central too, better for generic foods like plain fruit, vegetables, and staples.</p>
+    <p class="track__meta" style="margin:0 0 14px;">Home food (146 items) always works offline. Online search uses Open Food Facts (no key needed) and, if you add a free key below, USDA FoodData Central too, better for generic foods like plain fruit, vegetables, and staples.</p>
     <div class="form">
       <label class="field">
         <span>USDA FoodData Central API key (optional)</span>
@@ -140,7 +145,7 @@
     </div>
     <input type="search" class="search" id="food-search" placeholder="Search e.g. roti, paneer, pizza..." autocomplete="off">
     <div class="chiprow" id="chiprow"></div>
-    <p class="search__hint" id="search-hint">124 home foods loaded. Type 3+ letters to also search online.</p>
+    <p class="search__hint" id="search-hint">146 home foods loaded. Type 3+ letters to also search online.</p>
     <ul class="resultslist" id="resultslist"></ul>
     <button class="link-muted" id="btn-add-custom" style="margin-top:16px;">+ Add a food that's not listed</button>
   </div>

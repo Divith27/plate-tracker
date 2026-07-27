@@ -318,3 +318,44 @@ main{max-width:var(--maxw); margin:0 auto; padding:0 20px 100px;}
   .bignum{font-size:60px;}
   .macro__num{font-size:26px;}
 }
+
+/* ---------- Splash screen ---------- */
+#splash{
+  position:fixed; inset:0; z-index:999;
+  display:flex; align-items:center; justify-content:center;
+  background:#000;
+  animation: splashBg 1.5s ease forwards, splashSlide 1.5s ease forwards;
+  will-change:transform;
+}
+.splash-logo{
+  position:absolute;
+  width:46px; height:auto;
+}
+.splash-logo--white{
+  opacity:1;
+  animation: splashFadeOut 1.5s ease forwards;
+}
+.splash-logo--dark{
+  opacity:0;
+  filter:invert(1);
+  animation: splashFadeIn 1.5s ease forwards;
+}
+@keyframes splashBg{
+  0%,42%{ background:#000; }
+  56%,100%{ background:#fff; }
+}
+@keyframes splashFadeOut{
+  0%,40%{ opacity:1; }
+  54%,100%{ opacity:0; }
+}
+@keyframes splashFadeIn{
+  0%,40%{ opacity:0; }
+  54%,100%{ opacity:1; }
+}
+@keyframes splashSlide{
+  0%,62%{ transform:translateY(0); }
+  100%{ transform:translateY(-100%); }
+}
+@media (prefers-reduced-motion:reduce){
+  #splash{ animation:none; display:none; }
+}
