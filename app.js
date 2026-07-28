@@ -25,11 +25,32 @@
   var DEFAULT_SETTINGS = { kcalBudget: 2250, proteinTarget: 155, carbsTarget: null, fatTarget: null, usdaApiKey: "" };
 
   var STORAGE_WORKOUT_DEFS = "plate_workout_defs_v1";
+  var OLD_DEFAULT_EXERCISES_V1 = {
+    upper_a: ["Chest Press Machine", "Seated Row Machine", "Lever Shoulder Press", "Lat Pulldown", "Dumbbell Curl", "Rope Push Down"],
+    upper_b: ["Peck Deck Fly", "Lever Reverse T-Bar Row", "Dumbbell Lateral Raises", "Cable Straight Arm Pulldown", "Hammer Curl", "Bar Pushdown"],
+    lower_a: ["Leg Press", "Seated Leg Curl", "Leg Extension", "Seated Calf Raises"],
+    lower_b: ["Dumbbell Squat", "Leg Press (single leg / narrow stance)", "Rear Delt Machine Fly", "Single Leg Calf Raise"]
+  };
+
   var DEFAULT_WORKOUT_DEFS = [
-    { id: "upper_a", label: "Upper A", exercises: ["Chest Press Machine", "Seated Row Machine", "Lever Shoulder Press", "Lat Pulldown", "Dumbbell Curl", "Rope Push Down"] },
-    { id: "upper_b", label: "Upper B", exercises: ["Peck Deck Fly", "Lever Reverse T-Bar Row", "Dumbbell Lateral Raises", "Cable Straight Arm Pulldown", "Hammer Curl", "Bar Pushdown"] },
-    { id: "lower_a", label: "Lower A", exercises: ["Leg Press", "Seated Leg Curl", "Leg Extension", "Seated Calf Raises"] },
-    { id: "lower_b", label: "Lower B", exercises: ["Dumbbell Squat", "Leg Press (single leg / narrow stance)", "Rear Delt Machine Fly", "Single Leg Calf Raise"] },
+    { id: "upper_a", label: "Upper A", exercises: [
+      "Dumbbell Incline Press — Chest", "Seated Row Machine — Back", "Cable Lateral Raise — Shoulders",
+      "Neutral Close Grip Lat Pulldown — Back", "Dumbbell Preacher Curl — Biceps", "Rope Push Down — Triceps",
+      "Dumbbell Wrist Curl — Forearms", "Trap-Bar Shrug — Upper Traps"
+    ] },
+    { id: "upper_b", label: "Upper B", exercises: [
+      "Peck Deck Fly — Chest", "Lever Reverse T-Bar Row — Back", "Shoulder Press Machine — Shoulders",
+      "Neutral Close Grip Lat Pulldown — Lats", "Dumbbell Preacher Curl — Biceps", "Bar Pushdown — Triceps",
+      "Dumbbell Wrist Reverse Curl — Forearms", "Trap-Bar Shrug — Upper Traps"
+    ] },
+    { id: "lower_a", label: "Lower A", exercises: [
+      "Leg Press — Quads/Glutes", "Seated Leg Curl — Hamstrings", "Leg Extension — Quads",
+      "Standing Calf Raises — Calves", "Weight-Plate Crunch — Abs", "Full Crunch Machine — Abs"
+    ] },
+    { id: "lower_b", label: "Lower B", exercises: [
+      "Leg Press — Quads/Glutes", "Seated Leg Curl — Hamstrings", "Leg Extension — Quads",
+      "Standing Calf Raises — Calves", "Full Crunch Machine — Abs", "Deadlift — Lower Back"
+    ] },
     { id: "ab", label: "Ab & Core", exercises: ["Leg Raise", "Full Crunch Machine", "Decline Sit-Up", "Bench Side Bend"] },
     { id: "cardio", label: "Cardio", exercises: ["20-30 min cardio (treadmill / cycle / incline walk)"] }
   ];
@@ -44,6 +65,21 @@
   }
   function saveWorkoutDefs() {
     localStorage.setItem(STORAGE_WORKOUT_DEFS, JSON.stringify(state.workoutDefs));
+  }
+  function migrateWorkoutDefsToV2() {
+    var STORAGE_DEFS_VERSION = "plate_workout_defs_version_v1";
+    var currentVersion = parseInt(localStorage.getItem(STORAGE_DEFS_VERSION) || "1", 10);
+    if (currentVersion >= 2) return;
+    var newDefaultsById = {};
+    DEFAULT_WORKOUT_DEFS.forEach(function (d) { newDefaultsById[d.id] = d.exercises; });
+    state.workoutDefs.forEach(function (def) {
+      var oldDefault = OLD_DEFAULT_EXERCISES_V1[def.id];
+      if (oldDefault && JSON.stringify(def.exercises) === JSON.stringify(oldDefault)) {
+        def.exercises = newDefaultsById[def.id].slice();
+      }
+    });
+    saveWorkoutDefs();
+    localStorage.setItem(STORAGE_DEFS_VERSION, "2");
   }
   function getWorkoutDef(id) {
     return state.workoutDefs.find(function (w) { return w.id === id; });
@@ -87,6 +123,7 @@
     pendingFood: null, // {name, kcal, protein, carbs, fat, servingLabel}
     pendingQty: 1
   };
+  migrateWorkoutDefsToV2();
 
   function loadWorkouts() {
     try {
@@ -215,6 +252,7 @@
     exerciselist: $("exerciselist"),
     btnAddExerciseRow: $("btn-add-exercise-row"),
     btnSaveWorkoutDef: $("btn-save-workout-def"),
+    btnResetWorkoutDef: $("btn-reset-workout-def"),
     btnDeleteWorkoutDef: $("btn-delete-workout-def"),
 
     sheetQty: $("sheet-qty"),
@@ -480,13 +518,19 @@
     });
   }
 
+  function matchesQuery(name, query) {
+    var haystack = name.toLowerCase();
+    var words = query.split(/\s+/).filter(Boolean);
+    return words.every(function (w) { return haystack.indexOf(w) !== -1; });
+  }
+
   var searchDebounce = null;
   els.foodSearch.addEventListener("input", function () {
     var q = els.foodSearch.value.trim().toLowerCase();
     if (q.length === 0) { renderCuratedDefault(); return; }
 
     var curatedMatches = curatedByCategory()
-      .filter(function (f) { return f.name.toLowerCase().indexOf(q) !== -1; })
+      .filter(function (f) { return matchesQuery(f.name, q); })
       .map(function (f) { return Object.assign({ source: f.category === "custom" ? "custom" : "home" }, f); });
 
     renderResults(curatedMatches);
@@ -785,9 +829,19 @@
     els.editWorkoutName.value = def ? def.label : "";
     renderExerciseRows(def ? def.exercises.slice() : []);
     els.btnDeleteWorkoutDef.style.display = def ? "block" : "none";
+    var codedDefault = id ? DEFAULT_WORKOUT_DEFS.find(function (d) { return d.id === id; }) : null;
+    els.btnResetWorkoutDef.style.display = codedDefault ? "block" : "none";
     openSheet(els.sheetEditWorkout);
   }
   els.btnCloseEditWorkout.addEventListener("click", function () { closeSheet(els.sheetEditWorkout); });
+
+  els.btnResetWorkoutDef.addEventListener("click", function () {
+    var codedDefault = DEFAULT_WORKOUT_DEFS.find(function (d) { return d.id === state.editingWorkoutId; });
+    if (!codedDefault) return;
+    if (!confirm('Reset "' + codedDefault.label + '" back to the coded default exercises? This replaces what\'s in the form below, tap Save to confirm.')) return;
+    els.editWorkoutName.value = codedDefault.label;
+    renderExerciseRows(codedDefault.exercises.slice());
+  });
 
   function renderExerciseRows(exercises) {
     els.exerciselist.innerHTML = "";
