@@ -24,29 +24,38 @@
   var STORAGE_WORKOUTS = "plate_workouts_v1";
   var DEFAULT_SETTINGS = { kcalBudget: 2250, proteinTarget: 155, carbsTarget: null, fatTarget: null, usdaApiKey: "" };
 
-  var WORKOUT_LABELS = { upper_a: "Upper A", upper_b: "Upper B", lower_a: "Lower A", lower_b: "Lower B", ab: "Ab & Core", cardio: "Cardio" };
-  var WORKOUT_EXERCISES = {
-    upper_a: [
-      "Chest Press Machine", "Seated Row Machine", "Lever Shoulder Press",
-      "Lat Pulldown", "Dumbbell Curl", "Rope Push Down"
-    ],
-    upper_b: [
-      "Peck Deck Fly", "Lever Reverse T-Bar Row", "Dumbbell Lateral Raises",
-      "Cable Straight Arm Pulldown", "Hammer Curl", "Bar Pushdown"
-    ],
-    lower_a: [
-      "Leg Press", "Seated Leg Curl", "Leg Extension", "Seated Calf Raises"
-    ],
-    lower_b: [
-      "Dumbbell Squat", "Leg Press (single leg / narrow stance)", "Rear Delt Machine Fly", "Single Leg Calf Raise"
-    ],
-    ab: [
-      "Leg Raise", "Full Crunch Machine", "Decline Sit-Up", "Bench Side Bend"
-    ],
-    cardio: [
-      "20-30 min cardio (treadmill / cycle / incline walk)"
-    ]
-  };
+  var STORAGE_WORKOUT_DEFS = "plate_workout_defs_v1";
+  var DEFAULT_WORKOUT_DEFS = [
+    { id: "upper_a", label: "Upper A", exercises: ["Chest Press Machine", "Seated Row Machine", "Lever Shoulder Press", "Lat Pulldown", "Dumbbell Curl", "Rope Push Down"] },
+    { id: "upper_b", label: "Upper B", exercises: ["Peck Deck Fly", "Lever Reverse T-Bar Row", "Dumbbell Lateral Raises", "Cable Straight Arm Pulldown", "Hammer Curl", "Bar Pushdown"] },
+    { id: "lower_a", label: "Lower A", exercises: ["Leg Press", "Seated Leg Curl", "Leg Extension", "Seated Calf Raises"] },
+    { id: "lower_b", label: "Lower B", exercises: ["Dumbbell Squat", "Leg Press (single leg / narrow stance)", "Rear Delt Machine Fly", "Single Leg Calf Raise"] },
+    { id: "ab", label: "Ab & Core", exercises: ["Leg Raise", "Full Crunch Machine", "Decline Sit-Up", "Bench Side Bend"] },
+    { id: "cardio", label: "Cardio", exercises: ["20-30 min cardio (treadmill / cycle / incline walk)"] }
+  ];
+
+  function loadWorkoutDefs() {
+    try {
+      var raw = localStorage.getItem(STORAGE_WORKOUT_DEFS);
+      if (!raw) return JSON.parse(JSON.stringify(DEFAULT_WORKOUT_DEFS));
+      var parsed = JSON.parse(raw);
+      return Array.isArray(parsed) && parsed.length > 0 ? parsed : JSON.parse(JSON.stringify(DEFAULT_WORKOUT_DEFS));
+    } catch (e) { return JSON.parse(JSON.stringify(DEFAULT_WORKOUT_DEFS)); }
+  }
+  function saveWorkoutDefs() {
+    localStorage.setItem(STORAGE_WORKOUT_DEFS, JSON.stringify(state.workoutDefs));
+  }
+  function getWorkoutDef(id) {
+    return state.workoutDefs.find(function (w) { return w.id === id; });
+  }
+  function getWorkoutLabel(id) {
+    var def = getWorkoutDef(id);
+    return def ? def.label : id;
+  }
+  function getWorkoutExercises(id) {
+    var def = getWorkoutDef(id);
+    return def ? def.exercises : [];
+  }
 
   var todayKey = function () {
     var d = new Date();
@@ -72,6 +81,7 @@
     curatedFoods: [],
     customFoods: loadCustomFoods(),
     workouts: loadWorkouts(),
+    workoutDefs: loadWorkoutDefs(),
     categories: [],
     activeCategory: "all",
     pendingFood: null, // {name, kcal, protein, carbs, fat, servingLabel}
@@ -188,12 +198,24 @@
     workoutstatusEmpty: $("workoutstatus-empty"),
     btnPickWorkout: $("btn-pick-workout"),
     sheetWorkoutPicker: $("sheet-workout-picker"),
+    tilegrid: $("tilegrid"),
     btnCloseWorkoutPicker: $("btn-close-workout-picker"),
     sheetWorkoutChecklist: $("sheet-workout-checklist"),
     btnCloseChecklist: $("btn-close-checklist"),
     checklistTitle: $("checklist-title"),
     checklist: $("checklist"),
     btnChangeWorkout: $("btn-change-workout"),
+
+    workoutdeflist: $("workoutdeflist"),
+    btnAddWorkoutDef: $("btn-add-workout-def"),
+    sheetEditWorkout: $("sheet-edit-workout"),
+    btnCloseEditWorkout: $("btn-close-edit-workout"),
+    editWorkoutTitle: $("edit-workout-title"),
+    editWorkoutName: $("edit-workout-name"),
+    exerciselist: $("exerciselist"),
+    btnAddExerciseRow: $("btn-add-exercise-row"),
+    btnSaveWorkoutDef: $("btn-save-workout-def"),
+    btnDeleteWorkoutDef: $("btn-delete-workout-def"),
 
     sheetQty: $("sheet-qty"),
     btnCloseQty: $("btn-close-qty"),
@@ -216,7 +238,7 @@
       els.views.forEach(function (v) { v.classList.remove("is-active"); });
       $("view-" + view).classList.add("is-active");
       if (view === "history") renderHistory();
-      if (view === "settings") fillSettingsForm();
+      if (view === "settings") { fillSettingsForm(); renderWorkoutDefList(); }
     });
   });
 
@@ -254,7 +276,7 @@
         li.innerHTML =
           '<div class="logitem__main">' +
             '<span class="logitem__name">' + escapeHtml(entry.name) + '</span>' +
-            '<span class="logitem__meta">' + escapeHtml(entry.servingLabel) + '</span>' +
+            '<span class="logitem__meta">' + escapeHtml(entry.servingLabel) + ' · ' + Math.round(entry.protein) + 'g protein</span>' +
           '</div>' +
           '<div class="logitem__right">' +
             '<span class="logitem__kcal">' + Math.round(entry.kcal) + ' kcal</span>' +
@@ -299,7 +321,7 @@
       var entries = state.logs[key] || [];
       var totals = entries.reduce(function (acc, e) { acc.kcal += e.kcal; acc.protein += e.protein; return acc; }, { kcal: 0, protein: 0 });
       var workout = state.workouts[key];
-      var workoutLine = workout ? (' · ' + escapeHtml(WORKOUT_LABELS[workout.type] || workout.type) + ' workout') : "";
+      var workoutLine = workout ? (' · ' + escapeHtml(getWorkoutLabel(workout.type)) + ' workout') : "";
       var subParts = [];
       if (entries.length > 0) subParts.push(entries.length + ' item' + (entries.length === 1 ? "" : "s") + ' · ' + Math.round(totals.protein) + 'g protein');
       var li = document.createElement("li");
@@ -336,7 +358,7 @@
   });
 
   els.btnExportData.addEventListener("click", function () {
-    var data = { settings: state.settings, logs: state.logs, customFoods: state.customFoods, workouts: state.workouts };
+    var data = { settings: state.settings, logs: state.logs, customFoods: state.customFoods, workouts: state.workouts, workoutDefs: state.workoutDefs };
     var blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     var url = URL.createObjectURL(blob);
     var a = document.createElement("a");
@@ -347,18 +369,21 @@
   });
 
   els.btnClearData.addEventListener("click", function () {
-    if (!confirm("This erases every logged day, your custom foods, your workout history, and your settings, permanently. Continue?")) return;
+    if (!confirm("This erases every logged day, your custom foods, your workout history and definitions, and your settings, permanently. Continue?")) return;
     localStorage.removeItem(STORAGE_LOGS);
     localStorage.removeItem(STORAGE_SETTINGS);
     localStorage.removeItem(STORAGE_CUSTOM);
     localStorage.removeItem(STORAGE_WORKOUTS);
+    localStorage.removeItem(STORAGE_WORKOUT_DEFS);
     state.logs = {};
     state.customFoods = [];
     state.workouts = {};
+    state.workoutDefs = JSON.parse(JSON.stringify(DEFAULT_WORKOUT_DEFS));
     state.settings = Object.assign({}, DEFAULT_SETTINGS);
     renderDashboard();
     renderHistory();
     fillSettingsForm();
+    renderWorkoutDefList();
   });
 
   // ---------------- Add-food sheet ----------------
@@ -372,7 +397,7 @@
     sheetEl.setAttribute("aria-hidden", "true");
     if (!els.sheetAdd.classList.contains("is-open") && !els.sheetQty.classList.contains("is-open") &&
         !els.sheetCustom.classList.contains("is-open") && !els.sheetWorkoutPicker.classList.contains("is-open") &&
-        !els.sheetWorkoutChecklist.classList.contains("is-open")) {
+        !els.sheetWorkoutChecklist.classList.contains("is-open") && !els.sheetEditWorkout.classList.contains("is-open")) {
       els.scrim.classList.remove("is-open");
     }
   }
@@ -393,6 +418,7 @@
     closeSheet(els.sheetCustom);
     closeSheet(els.sheetWorkoutPicker);
     closeSheet(els.sheetWorkoutChecklist);
+    closeSheet(els.sheetEditWorkout);
   });
 
   function renderChips() {
@@ -624,13 +650,14 @@
         '<p class="track__meta" id="workoutstatus-empty">No workout picked for today.</p>' +
         '<button class="btn-primary" id="btn-pick-workout">Log workout</button>';
     } else {
-      var exercises = WORKOUT_EXERCISES[today.type] || [];
+      var exercises = getWorkoutExercises(today.type);
       var doneCount = exercises.filter(function (name) { return today.checked && today.checked[name]; }).length;
+      var subLine = exercises.length === 0 ? "Logged for today" : (doneCount + ' of ' + exercises.length + ' done');
       els.workoutstatus.innerHTML =
         '<div class="workoutstatus__row">' +
           '<div>' +
-            '<div class="workoutstatus__label">' + escapeHtml(WORKOUT_LABELS[today.type] || today.type) + '</div>' +
-            '<div class="workoutstatus__sub">' + doneCount + ' of ' + exercises.length + ' done</div>' +
+            '<div class="workoutstatus__label">' + escapeHtml(getWorkoutLabel(today.type)) + '</div>' +
+            '<div class="workoutstatus__sub">' + subLine + '</div>' +
           '</div>' +
           '<button class="link-muted" id="btn-open-checklist">Open checklist</button>' +
         '</div>';
@@ -646,18 +673,25 @@
   }
 
   function openWorkoutPicker() {
+    renderWorkoutTiles();
     openSheet(els.sheetWorkoutPicker);
   }
   els.btnCloseWorkoutPicker.addEventListener("click", function () { closeSheet(els.sheetWorkoutPicker); });
 
-  els.sheetWorkoutPicker.querySelectorAll(".tile").forEach(function (tile) {
-    tile.addEventListener("click", function () {
-      var type = tile.getAttribute("data-workout");
-      pickWorkoutForToday(type);
-      closeSheet(els.sheetWorkoutPicker);
-      openWorkoutChecklist(type);
+  function renderWorkoutTiles() {
+    els.tilegrid.innerHTML = "";
+    state.workoutDefs.forEach(function (def) {
+      var btn = document.createElement("button");
+      btn.className = "tile";
+      btn.textContent = def.label;
+      btn.addEventListener("click", function () {
+        pickWorkoutForToday(def.id);
+        closeSheet(els.sheetWorkoutPicker);
+        openWorkoutChecklist(def.id);
+      });
+      els.tilegrid.appendChild(btn);
     });
-  });
+  }
 
   function pickWorkoutForToday(type) {
     var key = todayKey();
@@ -672,15 +706,22 @@
   }
 
   function openWorkoutChecklist(type) {
-    els.checklistTitle.textContent = WORKOUT_LABELS[type] || type;
+    els.checklistTitle.textContent = getWorkoutLabel(type);
     renderChecklistItems(type);
     openSheet(els.sheetWorkoutChecklist);
   }
 
   function renderChecklistItems(type) {
-    var exercises = WORKOUT_EXERCISES[type] || [];
+    var exercises = getWorkoutExercises(type);
     var today = state.workouts[todayKey()] || { checked: {} };
     els.checklist.innerHTML = "";
+    if (exercises.length === 0) {
+      var li0 = document.createElement("li");
+      li0.className = "empty";
+      li0.textContent = "No exercise list for this one, it's already logged for today.";
+      els.checklist.appendChild(li0);
+      return;
+    }
     exercises.forEach(function (name) {
       var isChecked = !!(today.checked && today.checked[name]);
       var li = document.createElement("li");
@@ -711,11 +752,99 @@
     openWorkoutPicker();
   });
 
+  // ---------------- Workout definition editor (Settings) ----------------
+  function renderWorkoutDefList() {
+    els.workoutdeflist.innerHTML = "";
+    if (state.workoutDefs.length === 0) {
+      var li0 = document.createElement("li");
+      li0.className = "empty";
+      li0.textContent = "No workouts defined yet.";
+      els.workoutdeflist.appendChild(li0);
+      return;
+    }
+    state.workoutDefs.forEach(function (def) {
+      var li = document.createElement("li");
+      li.className = "workoutdefitem";
+      li.innerHTML =
+        '<div>' +
+          '<div class="workoutdefitem__name">' + escapeHtml(def.label) + '</div>' +
+          '<div class="workoutdefitem__sub">' + def.exercises.length + ' exercise' + (def.exercises.length === 1 ? "" : "s") + '</div>' +
+        '</div>' +
+        '<span class="link-muted">Edit</span>';
+      li.addEventListener("click", function () { openEditWorkout(def.id); });
+      els.workoutdeflist.appendChild(li);
+    });
+  }
+
+  els.btnAddWorkoutDef.addEventListener("click", function () { openEditWorkout(null); });
+
+  function openEditWorkout(id) {
+    state.editingWorkoutId = id;
+    var def = id ? getWorkoutDef(id) : null;
+    els.editWorkoutTitle.textContent = def ? "Edit workout" : "New workout";
+    els.editWorkoutName.value = def ? def.label : "";
+    renderExerciseRows(def ? def.exercises.slice() : []);
+    els.btnDeleteWorkoutDef.style.display = def ? "block" : "none";
+    openSheet(els.sheetEditWorkout);
+  }
+  els.btnCloseEditWorkout.addEventListener("click", function () { closeSheet(els.sheetEditWorkout); });
+
+  function renderExerciseRows(exercises) {
+    els.exerciselist.innerHTML = "";
+    exercises.forEach(function (name) { addExerciseRow(name); });
+  }
+
+  function addExerciseRow(value) {
+    var li = document.createElement("li");
+    li.className = "exerciserow";
+    li.innerHTML =
+      '<input type="text" value="' + escapeAttr(value || "") + '" placeholder="Exercise name">' +
+      '<button class="exerciserow__remove" aria-label="Remove">&times;</button>';
+    li.querySelector(".exerciserow__remove").addEventListener("click", function () { li.remove(); });
+    els.exerciselist.appendChild(li);
+  }
+
+  els.btnAddExerciseRow.addEventListener("click", function () { addExerciseRow(""); });
+
+  els.btnSaveWorkoutDef.addEventListener("click", function () {
+    var name = els.editWorkoutName.value.trim();
+    if (!name) { alert("Give the workout a name."); return; }
+    var exercises = Array.from(els.exerciselist.querySelectorAll("input"))
+      .map(function (inp) { return inp.value.trim(); })
+      .filter(function (v) { return v.length > 0; });
+
+    if (state.editingWorkoutId) {
+      var def = getWorkoutDef(state.editingWorkoutId);
+      def.label = name;
+      def.exercises = exercises;
+    } else {
+      var id = "w_" + Date.now();
+      state.workoutDefs.push({ id: id, label: name, exercises: exercises });
+    }
+    saveWorkoutDefs();
+    closeSheet(els.sheetEditWorkout);
+    renderWorkoutDefList();
+    renderWorkoutStatus();
+  });
+
+  els.btnDeleteWorkoutDef.addEventListener("click", function () {
+    if (!state.editingWorkoutId) return;
+    if (!confirm("Delete this workout? Past history entries will keep showing its name, but you won't be able to pick it again.")) return;
+    state.workoutDefs = state.workoutDefs.filter(function (w) { return w.id !== state.editingWorkoutId; });
+    saveWorkoutDefs();
+    closeSheet(els.sheetEditWorkout);
+    renderWorkoutDefList();
+    renderWorkoutStatus();
+  });
+
   // ---------------- Utils ----------------
   function escapeHtml(str) {
     var div = document.createElement("div");
     div.textContent = str;
     return div.innerHTML;
+  }
+  function escapeAttr(str) {
+    return String(str).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
 
   // ---------------- Boot ----------------

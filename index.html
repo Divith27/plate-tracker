@@ -136,6 +136,13 @@
       <a class="link-muted" href="https://fdc.nal.usda.gov/api-key-signup" target="_blank" rel="noopener" style="text-decoration:underline;">Get a free key (1 minute, no cost)</a>
     </div>
     <div class="section-head" style="margin-top:48px;">
+      <h2>Workouts</h2>
+    </div>
+    <p class="track__meta" style="margin:0 0 14px;">Edit names and exercises, or add a new workout type (leave exercises empty for something like a run, just picking it logs it for the day).</p>
+    <ul class="workoutlist" id="workoutdeflist"></ul>
+    <button class="btn-primary" id="btn-add-workout-def" style="margin-top:14px;">Add workout</button>
+
+    <div class="section-head" style="margin-top:48px;">
       <h2>Data</h2>
     </div>
     <button class="link-muted" id="btn-export-data">Export all data (JSON)</button>
@@ -216,6 +223,27 @@
 
 <div class="scrim" id="scrim"></div>
 
+<!-- EDIT WORKOUT DEFINITION -->
+<div class="sheet" id="sheet-edit-workout" aria-hidden="true">
+  <div class="sheet__inner">
+    <div class="sheet__head">
+      <h2 id="edit-workout-title">Edit workout</h2>
+      <button class="sheet__close" id="btn-close-edit-workout" aria-label="Close">&times;</button>
+    </div>
+    <div class="form">
+      <label class="field">
+        <span>Workout name</span>
+        <input type="text" id="edit-workout-name" placeholder="e.g. Run">
+      </label>
+    </div>
+    <p class="section-head" style="margin:22px 0 4px;"><span style="font-size:13px;color:var(--gray);font-weight:600;">Exercises (optional)</span></p>
+    <ul class="exerciselist" id="exerciselist"></ul>
+    <button class="link-muted" id="btn-add-exercise-row" style="margin-top:10px;">+ Add exercise</button>
+    <button class="btn-primary" id="btn-save-workout-def" style="margin-top:24px;">Save workout</button>
+    <button class="link-muted link-danger" id="btn-delete-workout-def" style="margin-top:14px; display:none;">Delete this workout</button>
+  </div>
+</div>
+
 <!-- WORKOUT PICKER -->
 <div class="sheet" id="sheet-workout-picker" aria-hidden="true">
   <div class="sheet__inner">
@@ -223,14 +251,7 @@
       <h2>Pick today's workout</h2>
       <button class="sheet__close" id="btn-close-workout-picker" aria-label="Close">&times;</button>
     </div>
-    <div class="tilegrid">
-      <button class="tile" data-workout="upper_a">Upper A</button>
-      <button class="tile" data-workout="upper_b">Upper B</button>
-      <button class="tile" data-workout="lower_a">Lower A</button>
-      <button class="tile" data-workout="lower_b">Lower B</button>
-      <button class="tile" data-workout="ab">Ab &amp; Core</button>
-      <button class="tile" data-workout="cardio">Cardio</button>
-    </div>
+    <div class="tilegrid" id="tilegrid"></div>
   </div>
 </div>
 
