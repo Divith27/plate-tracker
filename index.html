@@ -29,6 +29,7 @@
     <nav class="tabs" role="tablist">
       <button class="tab is-active" data-view="dashboard" role="tab" aria-selected="true">Today</button>
       <button class="tab" data-view="history" role="tab" aria-selected="false">History</button>
+      <button class="tab" data-view="prs" role="tab" aria-selected="false">PRs</button>
       <button class="tab" data-view="settings" role="tab" aria-selected="false">Settings</button>
     </nav>
   </div>
@@ -85,13 +86,6 @@
       <button class="btn-primary" id="btn-pick-workout">Log workout</button>
     </div>
 
-    <div class="section-head" style="margin-top:40px;">
-      <h2>PR tracker</h2>
-      <button class="link-muted" id="btn-toggle-prs">Show</button>
-    </div>
-    <p class="track__meta" style="margin:0 0 10px;">Every exercise across your workouts, note the weight/reps you're at. Not tied to any day, just your current bests.</p>
-    <div id="prlist" style="display:none;"></div>
-
   </section>
 
   <!-- HISTORY VIEW -->
@@ -103,6 +97,16 @@
     <ul class="histlist" id="histlist">
       <li class="empty">No history yet, come back after logging a few days.</li>
     </ul>
+  </section>
+
+  <!-- PRS VIEW -->
+  <section class="view" id="view-prs">
+    <div class="hero hero--compact">
+      <p class="eyebrow">Personal bests</p>
+      <h1 class="pagetitle">PR Tracker</h1>
+    </div>
+    <p class="track__meta" style="margin:0 0 6px;">Every exercise across your workouts, note the weight/reps you're at. Not tied to any day, just your current bests. Tap a workout to expand it.</p>
+    <div id="prlist"></div>
   </section>
 
   <!-- SETTINGS VIEW -->
@@ -134,7 +138,7 @@
     <div class="section-head" style="margin-top:48px;">
       <h2>Search sources</h2>
     </div>
-    <p class="track__meta" style="margin:0 0 14px;">Home food (163 items) always works offline. Online search uses Open Food Facts (no key needed) and, if you add a free key below, USDA FoodData Central too, better for generic foods like plain fruit, vegetables, and staples.</p>
+    <p class="track__meta" style="margin:0 0 14px;">Home food (171 items) always works offline. Online search uses Open Food Facts (no key needed) and, if you add a free key below, USDA FoodData Central too, better for generic foods like plain fruit, vegetables, and staples.</p>
     <div class="form">
       <label class="field">
         <span>USDA FoodData Central API key (optional)</span>
@@ -167,7 +171,7 @@
     </div>
     <input type="search" class="search" id="food-search" placeholder="Search e.g. roti, paneer, pizza..." autocomplete="off">
     <div class="chiprow" id="chiprow"></div>
-    <p class="search__hint" id="search-hint">163 home foods loaded. Type 3+ letters to also search online.</p>
+    <p class="search__hint" id="search-hint">171 home foods loaded. Type 3+ letters to also search online.</p>
     <ul class="resultslist" id="resultslist"></ul>
     <button class="link-muted" id="btn-add-custom" style="margin-top:16px;">+ Add a food that's not listed</button>
   </div>

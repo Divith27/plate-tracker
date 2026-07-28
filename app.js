@@ -255,7 +255,6 @@
     checklist: $("checklist"),
     btnChangeWorkout: $("btn-change-workout"),
     btnRemoveWorkoutChecklist: $("btn-remove-workout-checklist"),
-    btnTogglePrs: $("btn-toggle-prs"),
     prlist: $("prlist"),
 
     workoutdeflist: $("workoutdeflist"),
@@ -291,6 +290,7 @@
       els.views.forEach(function (v) { v.classList.remove("is-active"); });
       $("view-" + view).classList.add("is-active");
       if (view === "history") renderHistory();
+      if (view === "prs") renderPRList();
       if (view === "settings") { fillSettingsForm(); renderWorkoutDefList(); }
     });
   });
@@ -439,8 +439,7 @@
     renderHistory();
     fillSettingsForm();
     renderWorkoutDefList();
-    prListRendered = false;
-    if (els.prlist.style.display !== "none") { renderPRList(); prListRendered = true; }
+    renderPRList();
   });
 
   // ---------------- Add-food sheet ----------------
@@ -783,18 +782,7 @@
   }
 
   // ---------------- PR tracker ----------------
-  var prListRendered = false;
-  els.btnTogglePrs.addEventListener("click", function () {
-    var isHidden = els.prlist.style.display === "none";
-    if (isHidden) {
-      if (!prListRendered) { renderPRList(); prListRendered = true; }
-      els.prlist.style.display = "block";
-      els.btnTogglePrs.textContent = "Hide";
-    } else {
-      els.prlist.style.display = "none";
-      els.btnTogglePrs.textContent = "Show";
-    }
-  });
+  var prOpenSections = {};
 
   function prKey(workoutId, exerciseName) {
     return workoutId + "::" + exerciseName;
@@ -812,12 +800,22 @@
     }
     defsWithExercises.forEach(function (def) {
       var section = document.createElement("div");
-      section.className = "prsection";
-      var title = document.createElement("p");
-      title.className = "prsection__title";
-      title.textContent = def.label;
-      section.appendChild(title);
+      section.className = "prsection" + (prOpenSections[def.id] ? " is-open" : "");
 
+      var header = document.createElement("button");
+      header.className = "prsection__header";
+      header.innerHTML =
+        '<span class="prsection__title">' + escapeHtml(def.label) + '</span>' +
+        '<span class="prsection__count">' + def.exercises.length + ' exercise' + (def.exercises.length === 1 ? "" : "s") + '</span>' +
+        '<span class="prsection__chevron">&#9660;</span>';
+      header.addEventListener("click", function () {
+        prOpenSections[def.id] = !prOpenSections[def.id];
+        section.classList.toggle("is-open");
+      });
+      section.appendChild(header);
+
+      var body = document.createElement("div");
+      body.className = "prsection__body";
       def.exercises.forEach(function (name) {
         var key = prKey(def.id, name);
         var row = document.createElement("div");
@@ -830,8 +828,9 @@
           state.prs[key] = input.value;
           savePRs();
         });
-        section.appendChild(row);
+        body.appendChild(row);
       });
+      section.appendChild(body);
       els.prlist.appendChild(section);
     });
   }
@@ -967,8 +966,7 @@
     closeSheet(els.sheetEditWorkout);
     renderWorkoutDefList();
     renderWorkoutStatus();
-    prListRendered = false;
-    if (els.prlist.style.display !== "none") { renderPRList(); prListRendered = true; }
+    renderPRList();
   });
 
   els.btnDeleteWorkoutDef.addEventListener("click", function () {
@@ -979,8 +977,7 @@
     closeSheet(els.sheetEditWorkout);
     renderWorkoutDefList();
     renderWorkoutStatus();
-    prListRendered = false;
-    if (els.prlist.style.display !== "none") { renderPRList(); prListRendered = true; }
+    renderPRList();
   });
 
   // ---------------- Utils ----------------

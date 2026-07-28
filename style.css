@@ -46,7 +46,7 @@ h1,h2,h3,.bignum,.macro__num,.pagetitle,.btn-primary,.tab,.stepper__val{
   padding:16px 20px;
 }
 .mark{color:var(--white); display:flex; align-items:center;}
-.tabs{display:flex; gap:22px;}
+.tabs{display:flex; gap:16px;}
 .tab{
   background:none;
   border:none;
@@ -193,11 +193,11 @@ main{max-width:var(--maxw); margin:0 auto; padding:0 20px 100px;}
   padding:20px 0;
   border-bottom:none;
 }
-.logitem__main{display:flex; flex-direction:column;}
+.logitem__main{display:flex; flex-direction:column; min-width:0; flex:1;}
 .logitem__name{font-weight:600; font-size:15px;}
 .logitem__meta{font-size:12.5px; color:var(--gray); margin-top:2px;}
-.logitem__right{display:flex; align-items:center; gap:14px;}
-.logitem__kcal{font-weight:700; font-size:15px; color:var(--blue);}
+.logitem__right{display:flex; align-items:center; gap:14px; flex-shrink:0; white-space:nowrap;}
+.logitem__kcal{font-weight:700; font-size:15px; color:var(--blue); white-space:nowrap;}
 .logitem__del{
   background:none; border:none; color:var(--gray-light);
   font-size:20px; cursor:pointer; line-height:1; padding:4px;
@@ -439,13 +439,24 @@ main{max-width:var(--maxw); margin:0 auto; padding:0 20px 100px;}
 .exerciserow__remove:hover{color:var(--danger);}
 
 /* ---------- PR tracker ---------- */
-.prsection{margin-top:18px;}
-.prsection:first-child{margin-top:0;}
+.prsection{border-bottom:1px solid var(--line);}
+.prsection__header{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px 0; cursor:pointer; background:none; border:none; width:100%;
+  text-align:left;
+}
 .prsection__title{
   font-family:'Inter',sans-serif; text-transform:none;
-  font-size:13px; font-weight:700; color:var(--gray);
-  margin:0 0 8px;
+  font-size:15px; font-weight:700; color:var(--black);
+  margin:0;
 }
+.prsection__count{font-size:12.5px; color:var(--gray); font-weight:500; margin-right:auto; margin-left:8px;}
+.prsection__chevron{
+  color:var(--gray-light); font-size:13px; transition:transform .2s ease; flex-shrink:0;
+}
+.prsection.is-open .prsection__chevron{transform:rotate(180deg);}
+.prsection__body{display:none; padding-bottom:12px;}
+.prsection.is-open .prsection__body{display:block;}
 .pritem{
   display:flex; align-items:center; gap:12px;
   padding:9px 0; border-bottom:1px solid var(--line);
