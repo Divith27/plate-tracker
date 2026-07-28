@@ -22,6 +22,7 @@
   var STORAGE_SETTINGS = "plate_settings_v1";
   var STORAGE_CUSTOM = "plate_custom_foods_v1";
   var STORAGE_WORKOUTS = "plate_workouts_v1";
+  var STORAGE_PRS = "plate_prs_v1";
   var DEFAULT_SETTINGS = { kcalBudget: 2250, proteinTarget: 155, carbsTarget: null, fatTarget: null, usdaApiKey: "" };
 
   var STORAGE_WORKOUT_DEFS = "plate_workout_defs_v1";
@@ -118,6 +119,7 @@
     customFoods: loadCustomFoods(),
     workouts: loadWorkouts(),
     workoutDefs: loadWorkoutDefs(),
+    prs: loadPRs(),
     categories: [],
     activeCategory: "all",
     pendingFood: null, // {name, kcal, protein, carbs, fat, servingLabel}
@@ -133,6 +135,16 @@
   }
   function saveWorkouts() {
     localStorage.setItem(STORAGE_WORKOUTS, JSON.stringify(state.workouts));
+  }
+
+  function loadPRs() {
+    try {
+      var raw = localStorage.getItem(STORAGE_PRS);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) { return {}; }
+  }
+  function savePRs() {
+    localStorage.setItem(STORAGE_PRS, JSON.stringify(state.prs));
   }
 
   function loadCustomFoods() {
@@ -243,6 +255,8 @@
     checklist: $("checklist"),
     btnChangeWorkout: $("btn-change-workout"),
     btnRemoveWorkoutChecklist: $("btn-remove-workout-checklist"),
+    btnTogglePrs: $("btn-toggle-prs"),
+    prlist: $("prlist"),
 
     workoutdeflist: $("workoutdeflist"),
     btnAddWorkoutDef: $("btn-add-workout-def"),
@@ -397,7 +411,7 @@
   });
 
   els.btnExportData.addEventListener("click", function () {
-    var data = { settings: state.settings, logs: state.logs, customFoods: state.customFoods, workouts: state.workouts, workoutDefs: state.workoutDefs };
+    var data = { settings: state.settings, logs: state.logs, customFoods: state.customFoods, workouts: state.workouts, workoutDefs: state.workoutDefs, prs: state.prs };
     var blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     var url = URL.createObjectURL(blob);
     var a = document.createElement("a");
@@ -408,21 +422,25 @@
   });
 
   els.btnClearData.addEventListener("click", function () {
-    if (!confirm("This erases every logged day, your custom foods, your workout history and definitions, and your settings, permanently. Continue?")) return;
+    if (!confirm("This erases every logged day, your custom foods, your workout history and definitions, your PRs, and your settings, permanently. Continue?")) return;
     localStorage.removeItem(STORAGE_LOGS);
     localStorage.removeItem(STORAGE_SETTINGS);
     localStorage.removeItem(STORAGE_CUSTOM);
     localStorage.removeItem(STORAGE_WORKOUTS);
     localStorage.removeItem(STORAGE_WORKOUT_DEFS);
+    localStorage.removeItem(STORAGE_PRS);
     state.logs = {};
     state.customFoods = [];
     state.workouts = {};
     state.workoutDefs = JSON.parse(JSON.stringify(DEFAULT_WORKOUT_DEFS));
+    state.prs = {};
     state.settings = Object.assign({}, DEFAULT_SETTINGS);
     renderDashboard();
     renderHistory();
     fillSettingsForm();
     renderWorkoutDefList();
+    prListRendered = false;
+    if (els.prlist.style.display !== "none") { renderPRList(); prListRendered = true; }
   });
 
   // ---------------- Add-food sheet ----------------
@@ -764,6 +782,60 @@
     renderHistory();
   }
 
+  // ---------------- PR tracker ----------------
+  var prListRendered = false;
+  els.btnTogglePrs.addEventListener("click", function () {
+    var isHidden = els.prlist.style.display === "none";
+    if (isHidden) {
+      if (!prListRendered) { renderPRList(); prListRendered = true; }
+      els.prlist.style.display = "block";
+      els.btnTogglePrs.textContent = "Hide";
+    } else {
+      els.prlist.style.display = "none";
+      els.btnTogglePrs.textContent = "Show";
+    }
+  });
+
+  function prKey(workoutId, exerciseName) {
+    return workoutId + "::" + exerciseName;
+  }
+
+  function renderPRList() {
+    els.prlist.innerHTML = "";
+    var defsWithExercises = state.workoutDefs.filter(function (d) { return d.exercises.length > 0; });
+    if (defsWithExercises.length === 0) {
+      var empty = document.createElement("p");
+      empty.className = "track__meta";
+      empty.textContent = "No exercises defined yet, add some under Settings → Workouts.";
+      els.prlist.appendChild(empty);
+      return;
+    }
+    defsWithExercises.forEach(function (def) {
+      var section = document.createElement("div");
+      section.className = "prsection";
+      var title = document.createElement("p");
+      title.className = "prsection__title";
+      title.textContent = def.label;
+      section.appendChild(title);
+
+      def.exercises.forEach(function (name) {
+        var key = prKey(def.id, name);
+        var row = document.createElement("div");
+        row.className = "pritem";
+        row.innerHTML =
+          '<span class="pritem__name">' + escapeHtml(name) + '</span>' +
+          '<input type="text" placeholder="e.g. 50kg x 8" value="' + escapeAttr(state.prs[key] || "") + '">';
+        var input = row.querySelector("input");
+        input.addEventListener("input", function () {
+          state.prs[key] = input.value;
+          savePRs();
+        });
+        section.appendChild(row);
+      });
+      els.prlist.appendChild(section);
+    });
+  }
+
   function openWorkoutChecklist(type) {
     els.checklistTitle.textContent = getWorkoutLabel(type);
     renderChecklistItems(type);
@@ -895,6 +967,8 @@
     closeSheet(els.sheetEditWorkout);
     renderWorkoutDefList();
     renderWorkoutStatus();
+    prListRendered = false;
+    if (els.prlist.style.display !== "none") { renderPRList(); prListRendered = true; }
   });
 
   els.btnDeleteWorkoutDef.addEventListener("click", function () {
@@ -905,6 +979,8 @@
     closeSheet(els.sheetEditWorkout);
     renderWorkoutDefList();
     renderWorkoutStatus();
+    prListRendered = false;
+    if (els.prlist.style.display !== "none") { renderPRList(); prListRendered = true; }
   });
 
   // ---------------- Utils ----------------

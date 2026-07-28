@@ -85,6 +85,13 @@
       <button class="btn-primary" id="btn-pick-workout">Log workout</button>
     </div>
 
+    <div class="section-head" style="margin-top:40px;">
+      <h2>PR tracker</h2>
+      <button class="link-muted" id="btn-toggle-prs">Show</button>
+    </div>
+    <p class="track__meta" style="margin:0 0 10px;">Every exercise across your workouts, note the weight/reps you're at. Not tied to any day, just your current bests.</p>
+    <div id="prlist" style="display:none;"></div>
+
   </section>
 
   <!-- HISTORY VIEW -->
@@ -146,7 +153,7 @@
       <h2>Data</h2>
     </div>
     <button class="link-muted" id="btn-export-data">Export all data (JSON)</button>
-    <button class="link-muted link-danger" id="btn-clear-data">Erase all data</button>
+    <button class="link-muted link-danger" id="btn-clear-data" style="display:block; margin-top:14px;">Erase all data</button>
   </section>
 
 </main>
@@ -265,7 +272,7 @@
     </div>
     <ul class="checklist" id="checklist"></ul>
     <button class="link-muted" id="btn-change-workout" style="margin-top:18px;">Change workout type for today</button>
-    <button class="link-muted link-danger" id="btn-remove-workout-checklist" style="margin-top:14px;">Remove today's workout</button>
+    <button class="link-muted link-danger" id="btn-remove-workout-checklist" style="margin-top:14px; display:block;">Remove today's workout</button>
   </div>
 </div>
 
