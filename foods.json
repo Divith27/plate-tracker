@@ -1,7 +1,7 @@
 {
   "version": 2,
   "source": "curated-indian",
-  "categories": ["staple", "dal_legume", "sabzi", "dairy_protein", "snack", "street_food", "sweet", "fruit", "nuts_seeds", "beverage", "condiment", "dinner_rotation", "restaurant", "protein_brand"],
+  "categories": ["staple", "dal_legume", "sabzi", "dairy_protein", "snack", "street_food", "sweet", "fruit", "nuts_seeds", "beverage", "condiment", "dinner_rotation", "restaurant", "protein_brand", "movie_snacks"],
   "foods": [
     {"id": "roti", "name": "Roti / Chapati", "category": "staple", "serving": "1 piece (~40g)", "kcal": 104, "protein": 3, "carbs": 20, "fat": 1.2},
     {"id": "thepla", "name": "Thepla", "category": "staple", "serving": "1 piece (~40g)", "kcal": 130, "protein": 3, "carbs": 18, "fat": 5},
@@ -14,6 +14,7 @@
     {"id": "dosa_plain", "name": "Plain Dosa", "category": "staple", "serving": "1 medium", "kcal": 133, "protein": 2.5, "carbs": 24, "fat": 3},
     {"id": "rava_dosa", "name": "Rava Dosa", "category": "staple", "serving": "1 medium", "kcal": 180, "protein": 3, "carbs": 25, "fat": 8},
     {"id": "masala_dosa", "name": "Masala Dosa", "category": "staple", "serving": "1 medium", "kcal": 250, "protein": 5, "carbs": 35, "fat": 10},
+    {"id": "cheese_dosa", "name": "Cheese Dosa", "category": "staple", "serving": "1 medium", "kcal": 290, "protein": 8, "carbs": 30, "fat": 15},
     {"id": "uttapam", "name": "Uttapam", "category": "staple", "serving": "1 piece", "kcal": 170, "protein": 4, "carbs": 27, "fat": 5},
     {"id": "idli", "name": "Idli", "category": "staple", "serving": "1 piece", "kcal": 58, "protein": 2, "carbs": 12, "fat": 0.3},
     {"id": "medu_vada", "name": "Medu Vada", "category": "staple", "serving": "1 piece", "kcal": 130, "protein": 4, "carbs": 12, "fat": 8},
@@ -59,6 +60,9 @@
     {"id": "bhindi_masala", "name": "Bhindi Masala", "category": "sabzi", "serving": "1 katori (~150g)", "kcal": 135, "protein": 3, "carbs": 12, "fat": 9},
     {"id": "lauki_sabzi", "name": "Lauki Sabzi", "category": "sabzi", "serving": "1 katori (~150g)", "kcal": 90, "protein": 2, "carbs": 9, "fat": 5},
     {"id": "tinda_sabzi", "name": "Tinda Sabzi", "category": "sabzi", "serving": "1 katori (~150g)", "kcal": 95, "protein": 2, "carbs": 10, "fat": 5},
+    {"id": "toru_sabzi", "name": "Toru Sabzi (ridge gourd / turai)", "category": "sabzi", "serving": "1 katori (~150g)", "kcal": 90, "protein": 2, "carbs": 9, "fat": 5},
+    {"id": "gilki_sabzi", "name": "Gilki Sabzi (ridge gourd, regional name)", "category": "sabzi", "serving": "1 katori (~150g)", "kcal": 90, "protein": 2, "carbs": 9, "fat": 5},
+    {"id": "aloo_jeera", "name": "Aloo Jeera (dry aloo)", "category": "sabzi", "serving": "1 katori (~150g)", "kcal": 170, "protein": 3, "carbs": 25, "fat": 7},
 
     {"id": "paneer_raw", "name": "Paneer (raw)", "category": "dairy_protein", "serving": "100g", "kcal": 265, "protein": 18, "carbs": 3.5, "fat": 21},
     {"id": "paneer_bhurji", "name": "Paneer Bhurji", "category": "dairy_protein", "serving": "100g", "kcal": 220, "protein": 15, "carbs": 5, "fat": 16},
@@ -66,6 +70,9 @@
     {"id": "palak_paneer", "name": "Palak Paneer", "category": "dairy_protein", "serving": "1 katori (~150g)", "kcal": 260, "protein": 13, "carbs": 9, "fat": 19},
     {"id": "shahi_paneer", "name": "Shahi Paneer", "category": "dairy_protein", "serving": "1 katori (~150g)", "kcal": 320, "protein": 12, "carbs": 12, "fat": 25},
     {"id": "paneer_tikka", "name": "Paneer Tikka", "category": "dairy_protein", "serving": "100g", "kcal": 240, "protein": 16, "carbs": 6, "fat": 17},
+    {"id": "kadai_paneer", "name": "Kadai Paneer", "category": "dairy_protein", "serving": "1 katori (~150g)", "kcal": 290, "protein": 14, "carbs": 10, "fat": 21},
+    {"id": "amul_cheese_cube", "name": "Amul Cheese Cube", "category": "dairy_protein", "serving": "1 cube (25g)", "kcal": 80, "protein": 5, "carbs": 0, "fat": 6.5},
+    {"id": "amul_cheese_slice", "name": "Amul Cheese Slice", "category": "dairy_protein", "serving": "1 slice (20g)", "kcal": 62, "protein": 3.5, "carbs": 0.8, "fat": 5},
     {"id": "tofu_raw", "name": "Tofu (raw)", "category": "dairy_protein", "serving": "100g", "kcal": 145, "protein": 15, "carbs": 3, "fat": 8},
     {"id": "curd_plain", "name": "Curd / Dahi", "category": "dairy_protein", "serving": "1 katori (~150g)", "kcal": 98, "protein": 5, "carbs": 7, "fat": 5},
     {"id": "hung_curd", "name": "Hung Curd", "category": "dairy_protein", "serving": "100g", "kcal": 95, "protein": 8, "carbs": 4, "fat": 5},
@@ -89,6 +96,12 @@
     {"id": "biscuit_parle_g", "name": "Parle-G Biscuits", "category": "snack", "serving": "4 pieces", "kcal": 140, "protein": 2, "carbs": 24, "fat": 4},
     {"id": "peanut_chikki", "name": "Peanut Chikki", "category": "snack", "serving": "1 piece (~20g)", "kcal": 95, "protein": 3, "carbs": 10, "fat": 5},
     {"id": "makhana_roasted", "name": "Roasted Makhana", "category": "snack", "serving": "1 bowl (~30g)", "kcal": 105, "protein": 3, "carbs": 19, "fat": 2},
+    {"id": "sing_dana_chutney", "name": "Sing Dana Chutney (peanut chutney)", "category": "snack", "serving": "2 tbsp (~30g)", "kcal": 110, "protein": 4, "carbs": 5, "fat": 8},
+    {"id": "lays_classic", "name": "Lay's Classic Salted", "category": "snack", "serving": "1 pack (52g)", "kcal": 285, "protein": 3, "carbs": 28, "fat": 18},
+    {"id": "pringles_original", "name": "Pringles Original", "category": "snack", "serving": "1 serving (~30g)", "kcal": 160, "protein": 1, "carbs": 15, "fat": 10},
+    {"id": "bourbon_biscuit", "name": "Britannia Bourbon Biscuits", "category": "snack", "serving": "1 pack (~50g, 4 biscuits)", "kcal": 240, "protein": 3, "carbs": 36, "fat": 10},
+    {"id": "oreo", "name": "Oreo", "category": "snack", "serving": "3 cookies (34g)", "kcal": 160, "protein": 1, "carbs": 25, "fat": 7},
+    {"id": "nachos_salsa_cheese", "name": "Nachos with Salsa & Cheese", "category": "snack", "serving": "1 plate (~150g)", "kcal": 380, "protein": 9, "carbs": 40, "fat": 20},
 
     {"id": "pani_puri", "name": "Pani Puri", "category": "street_food", "serving": "6 pieces", "kcal": 200, "protein": 4, "carbs": 35, "fat": 5},
     {"id": "bhel_puri", "name": "Bhel Puri", "category": "street_food", "serving": "1 plate (~150g)", "kcal": 250, "protein": 5, "carbs": 40, "fat": 8},
@@ -97,6 +110,7 @@
     {"id": "misal_pav", "name": "Misal Pav", "category": "street_food", "serving": "1 plate", "kcal": 420, "protein": 14, "carbs": 55, "fat": 16},
     {"id": "pav_bhaji", "name": "Pav Bhaji (1 pav + bhaji)", "category": "street_food", "serving": "1 plate", "kcal": 400, "protein": 8, "carbs": 55, "fat": 16},
     {"id": "dabeli", "name": "Dabeli", "category": "street_food", "serving": "1 piece", "kcal": 250, "protein": 5, "carbs": 35, "fat": 10},
+    {"id": "lemon_bhel", "name": "Lemon Bhel", "category": "street_food", "serving": "1 plate (~150g)", "kcal": 240, "protein": 5, "carbs": 38, "fat": 7},
 
     {"id": "gulab_jamun", "name": "Gulab Jamun", "category": "sweet", "serving": "1 piece", "kcal": 150, "protein": 2, "carbs": 20, "fat": 7},
     {"id": "rasgulla", "name": "Rasgulla", "category": "sweet", "serving": "1 piece", "kcal": 120, "protein": 2, "carbs": 25, "fat": 1},
@@ -105,6 +119,8 @@
     {"id": "halwa", "name": "Suji Halwa", "category": "sweet", "serving": "1 katori (~100g)", "kcal": 260, "protein": 3, "carbs": 35, "fat": 12},
     {"id": "ice_cream", "name": "Ice Cream", "category": "sweet", "serving": "1 scoop (~65g)", "kcal": 137, "protein": 2.5, "carbs": 16, "fat": 7},
     {"id": "kaju_katli", "name": "Kaju Katli", "category": "sweet", "serving": "1 piece (~15g)", "kcal": 70, "protein": 1.5, "carbs": 8, "fat": 4},
+    {"id": "choco_chip_icecream_cup", "name": "Choco Chip Ice Cream Cup", "category": "sweet", "serving": "1 cup (~100ml)", "kcal": 200, "protein": 3, "carbs": 22, "fat": 11},
+    {"id": "cheesecake", "name": "Cheesecake", "category": "sweet", "serving": "1 slice (~100g)", "kcal": 320, "protein": 5, "carbs": 25, "fat": 22},
 
     {"id": "apple", "name": "Apple", "category": "fruit", "serving": "1 medium", "kcal": 95, "protein": 0.5, "carbs": 25, "fat": 0.3},
     {"id": "banana", "name": "Banana", "category": "fruit", "serving": "1 medium", "kcal": 105, "protein": 1.3, "carbs": 27, "fat": 0.4},
@@ -116,6 +132,7 @@
     {"id": "pomegranate", "name": "Pomegranate", "category": "fruit", "serving": "1 katori (~150g)", "kcal": 120, "protein": 2.4, "carbs": 27, "fat": 1.7},
     {"id": "guava", "name": "Guava", "category": "fruit", "serving": "1 medium", "kcal": 68, "protein": 2.6, "carbs": 14, "fat": 1},
     {"id": "chikoo", "name": "Chikoo", "category": "fruit", "serving": "1 medium", "kcal": 90, "protein": 0.4, "carbs": 22, "fat": 1.1},
+    {"id": "lychee", "name": "Lychee / Litchi", "category": "fruit", "serving": "10 pieces (~100g)", "kcal": 66, "protein": 0.8, "carbs": 17, "fat": 0.4},
 
     {"id": "almonds", "name": "Almonds", "category": "nuts_seeds", "serving": "10g (~8 pieces)", "kcal": 58, "protein": 2.1, "carbs": 2, "fat": 5},
     {"id": "cashews", "name": "Cashews", "category": "nuts_seeds", "serving": "10g (~6 pieces)", "kcal": 55, "protein": 1.8, "carbs": 3, "fat": 4.4},
@@ -132,6 +149,11 @@
     {"id": "nimbu_pani", "name": "Nimbu Pani", "category": "beverage", "serving": "1 glass (~250ml)", "kcal": 95, "protein": 0.1, "carbs": 24, "fat": 0},
     {"id": "coconut_water", "name": "Coconut Water", "category": "beverage", "serving": "1 glass (~250ml)", "kcal": 46, "protein": 1.7, "carbs": 9, "fat": 0.5},
     {"id": "fruit_juice", "name": "Fresh Fruit Juice", "category": "beverage", "serving": "1 glass (~250ml)", "kcal": 120, "protein": 1, "carbs": 28, "fat": 0.3},
+    {"id": "red_bull", "name": "Red Bull", "category": "beverage", "serving": "1 can (250ml)", "kcal": 110, "protein": 0, "carbs": 28, "fat": 0},
+    {"id": "iced_tea", "name": "Iced Tea (Lipton/Nestea style)", "category": "beverage", "serving": "1 glass (~250ml)", "kcal": 90, "protein": 0, "carbs": 22, "fat": 0},
+    {"id": "fresh_lime_soda_sweet", "name": "Fresh Lime Soda (sweet)", "category": "beverage", "serving": "1 glass (~300ml)", "kcal": 110, "protein": 0, "carbs": 28, "fat": 0},
+    {"id": "fresh_lime_soda_salted", "name": "Fresh Lime Soda (salted)", "category": "beverage", "serving": "1 glass (~300ml)", "kcal": 15, "protein": 0, "carbs": 3, "fat": 0},
+    {"id": "hot_chocolate", "name": "Hot Chocolate", "category": "beverage", "serving": "1 cup (~250ml)", "kcal": 210, "protein": 7, "carbs": 28, "fat": 8},
 
     {"id": "ghee", "name": "Ghee", "category": "condiment", "serving": "1 tsp (~5g)", "kcal": 45, "protein": 0, "carbs": 0, "fat": 5},
     {"id": "cooking_oil", "name": "Cooking Oil", "category": "condiment", "serving": "1 tsp (~5g)", "kcal": 40, "protein": 0, "carbs": 0, "fat": 4.5},
@@ -175,6 +197,17 @@
     {"id": "pizza_express_veg", "name": "Pizza Express Veg Pizza (Regular)", "category": "restaurant", "serving": "1 regular pizza (whole)", "kcal": 650, "protein": 22, "carbs": 78, "fat": 26},
     {"id": "sandwizza_grilled_cheese", "name": "Sandwizza Grilled Veg Cheese Sandwich", "category": "restaurant", "serving": "1 sandwich", "kcal": 320, "protein": 10, "carbs": 34, "fat": 15},
 
+    {"id": "avocado_sushi_roll", "name": "Avocado Sushi Roll", "category": "restaurant", "serving": "6 pieces", "kcal": 250, "protein": 5, "carbs": 45, "fat": 6},
+    {"id": "asparagus_sushi_roll", "name": "Asparagus Sushi Roll", "category": "restaurant", "serving": "6 pieces", "kcal": 220, "protein": 5, "carbs": 42, "fat": 3},
+    {"id": "thai_yellow_curry", "name": "Thai Yellow Curry (veg)", "category": "restaurant", "serving": "1 bowl (~200g)", "kcal": 280, "protein": 5, "carbs": 15, "fat": 22},
+    {"id": "blue_butterfly_pea_rice", "name": "Blue Butterfly Pea Rice (Blue Rice)", "category": "restaurant", "serving": "1 cup (~150g cooked)", "kcal": 200, "protein": 4, "carbs": 42, "fat": 2},
+    {"id": "starbucks_frappuccino", "name": "Starbucks Frappuccino (Grande, estimated)", "category": "restaurant", "serving": "1 Grande (473ml)", "kcal": 370, "protein": 4, "carbs": 55, "fat": 14},
+    {"id": "starbucks_hot_chocolate", "name": "Starbucks Hot Chocolate (Grande, estimated)", "category": "restaurant", "serving": "1 Grande (473ml)", "kcal": 350, "protein": 10, "carbs": 45, "fat": 14},
+    {"id": "subway_aloo_patty_sub", "name": "Subway Aloo Patty Sub (6-inch)", "category": "restaurant", "serving": "1 sub (269g)", "kcal": 451, "protein": 12, "carbs": 58, "fat": 16},
+    {"id": "subway_hashbrown", "name": "Subway Hashbrown", "category": "restaurant", "serving": "1 patty (55g)", "kcal": 94, "protein": 1.5, "carbs": 12, "fat": 4.5},
+    {"id": "subway_veggie_patty_sub", "name": "Subway Veggie Patty Sub (6-inch, estimated)", "category": "restaurant", "serving": "1 sub", "kcal": 380, "protein": 14, "carbs": 55, "fat": 10},
+    {"id": "subway_cheese_slice", "name": "Subway Cheese Slice (add-on)", "category": "restaurant", "serving": "1 slice", "kcal": 35, "protein": 2, "carbs": 0.5, "fat": 3},
+
     {"id": "superyou_wafer_chocolate", "name": "SuperYou Protein Wafer - Chocolate", "category": "protein_brand", "serving": "1 bar (40g, 10g protein)", "kcal": 188, "protein": 10, "carbs": 20, "fat": 10},
     {"id": "superyou_wafer_peanut_butter", "name": "SuperYou Protein Wafer - Peanut Butter", "category": "protein_brand", "serving": "1 bar (40g, 10g protein)", "kcal": 188, "protein": 10, "carbs": 20, "fat": 10},
     {"id": "superyou_wafer_coffee", "name": "SuperYou Protein Wafer - Coffee", "category": "protein_brand", "serving": "1 bar (40g, 10g protein)", "kcal": 187, "protein": 10, "carbs": 20, "fat": 10},
@@ -194,6 +227,13 @@
     {"id": "wholetruth_hazelnut_20g", "name": "The Whole Truth 20g Protein Bar - Hazelnut Cocoa (estimated)", "category": "protein_brand", "serving": "1 bar (67g)", "kcal": 310, "protein": 20, "carbs": 25, "fat": 15},
     {"id": "wholetruth_mini", "name": "The Whole Truth Mini Protein Bar (any flavor)", "category": "protein_brand", "serving": "1 mini bar (27g)", "kcal": 129, "protein": 6, "carbs": 15, "fat": 6},
 
-    {"id": "milkymist_skyr", "name": "Milky Mist Skyr High Protein Plain Yogurt", "category": "protein_brand", "serving": "100g", "kcal": 100, "protein": 12, "carbs": 10, "fat": 1.5}
+    {"id": "milkymist_skyr", "name": "Milky Mist Skyr High Protein Plain Yogurt", "category": "protein_brand", "serving": "100g", "kcal": 100, "protein": 11, "carbs": 10, "fat": 1.5},
+
+    {"id": "pvr_popcorn_small_salted", "name": "PVR Popcorn Small - Salted", "category": "movie_snacks", "serving": "1 small (~120g, estimated)", "kcal": 480, "protein": 6, "carbs": 50, "fat": 26},
+    {"id": "pvr_popcorn_small_caramel", "name": "PVR Popcorn Small - Caramel", "category": "movie_snacks", "serving": "1 small (~120g)", "kcal": 530, "protein": 6, "carbs": 68, "fat": 22},
+    {"id": "pvr_popcorn_small_cheese", "name": "PVR Popcorn Small - Cheese", "category": "movie_snacks", "serving": "1 small (~120g, estimated)", "kcal": 560, "protein": 7, "carbs": 48, "fat": 34},
+    {"id": "pvr_popcorn_medium_salted", "name": "PVR Popcorn Medium - Salted", "category": "movie_snacks", "serving": "1 medium (~230g)", "kcal": 754, "protein": 9, "carbs": 78, "fat": 44},
+    {"id": "pvr_popcorn_medium_caramel", "name": "PVR Popcorn Medium - Caramel", "category": "movie_snacks", "serving": "1 medium (~230g)", "kcal": 874, "protein": 8, "carbs": 130, "fat": 38},
+    {"id": "pvr_popcorn_medium_cheese", "name": "PVR Popcorn Medium - Cheese", "category": "movie_snacks", "serving": "1 medium (~230g)", "kcal": 1104, "protein": 13, "carbs": 90, "fat": 68}
   ]
 }

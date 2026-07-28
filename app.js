@@ -161,7 +161,8 @@
     all: "All", custom: "Your foods", staple: "Staples", dal_legume: "Dal & legumes", sabzi: "Sabzi",
     dairy_protein: "Dairy & protein", snack: "Snacks", street_food: "Street food",
     sweet: "Sweets", fruit: "Fruit", nuts_seeds: "Nuts & seeds", beverage: "Beverages",
-    condiment: "Condiments", dinner_rotation: "Dinner rotation", restaurant: "Restaurant", protein_brand: "Protein brands"
+    condiment: "Condiments", dinner_rotation: "Dinner rotation", restaurant: "Restaurant", protein_brand: "Protein brands",
+    movie_snacks: "Movie snacks"
   };
 
   function loadSettings() {
