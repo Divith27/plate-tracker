@@ -369,6 +369,7 @@ main{max-width:var(--maxw); margin:0 auto; padding:0 20px 100px;}
 }
 .workoutstatus__label{font-weight:700; font-size:15px;}
 .workoutstatus__sub{font-size:12.5px; color:var(--gray); margin-top:2px;}
+.workoutstatus__actions{display:flex; gap:16px; align-items:center;}
 
 .tilegrid{
   display:grid;

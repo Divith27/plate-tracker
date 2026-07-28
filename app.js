@@ -242,6 +242,7 @@
     checklistTitle: $("checklist-title"),
     checklist: $("checklist"),
     btnChangeWorkout: $("btn-change-workout"),
+    btnRemoveWorkoutChecklist: $("btn-remove-workout-checklist"),
 
     workoutdeflist: $("workoutdeflist"),
     btnAddWorkoutDef: $("btn-add-workout-def"),
@@ -703,7 +704,10 @@
             '<div class="workoutstatus__label">' + escapeHtml(getWorkoutLabel(today.type)) + '</div>' +
             '<div class="workoutstatus__sub">' + subLine + '</div>' +
           '</div>' +
-          '<button class="link-muted" id="btn-open-checklist">Open checklist</button>' +
+          '<div class="workoutstatus__actions">' +
+            '<button class="link-muted" id="btn-open-checklist">Open checklist</button>' +
+            '<button class="link-muted link-danger" id="btn-remove-workout">Remove</button>' +
+          '</div>' +
         '</div>';
     }
     // Re-bind since innerHTML replaced the buttons
@@ -714,6 +718,8 @@
       var today = state.workouts[todayKey()];
       if (today) openWorkoutChecklist(today.type);
     });
+    var removeBtn = document.getElementById("btn-remove-workout");
+    if (removeBtn) removeBtn.addEventListener("click", function () { removeTodaysWorkout(); });
   }
 
   function openWorkoutPicker() {
@@ -745,6 +751,15 @@
       checked: (existing && existing.type === type) ? existing.checked : {}
     };
     saveWorkouts();
+    renderWorkoutStatus();
+    renderHistory();
+  }
+
+  function removeTodaysWorkout() {
+    if (!confirm("Remove today's workout? This won't delete the workout type itself, just today's pick.")) return;
+    delete state.workouts[todayKey()];
+    saveWorkouts();
+    closeSheet(els.sheetWorkoutChecklist);
     renderWorkoutStatus();
     renderHistory();
   }
@@ -795,6 +810,7 @@
     closeSheet(els.sheetWorkoutChecklist);
     openWorkoutPicker();
   });
+  els.btnRemoveWorkoutChecklist.addEventListener("click", function () { removeTodaysWorkout(); });
 
   // ---------------- Workout definition editor (Settings) ----------------
   function renderWorkoutDefList() {
