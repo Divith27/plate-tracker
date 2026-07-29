@@ -224,11 +224,12 @@
     <p class="qty-serving" id="qty-serving-label">1 serving</p>
     <div class="unitrow" id="qty-unitrow"></div>
     <div class="stepper">
-      <button class="stepper__btn stepper__btn--small" id="qty-minus-small" aria-label="Decrease a little">&minus;</button>
       <button class="stepper__btn" id="qty-minus" aria-label="Decrease">&minus;</button>
-      <span class="stepper__val" id="qty-val">1</span>
+      <span class="stepper__valwrap">
+        <input class="stepper__val" id="qty-val" type="number" inputmode="decimal" step="0.25">
+        <span class="stepper__unit" id="qty-unit-suffix"></span>
+      </span>
       <button class="stepper__btn" id="qty-plus" aria-label="Increase">&plus;</button>
-      <button class="stepper__btn stepper__btn--small" id="qty-plus-small" aria-label="Increase a little">&plus;</button>
     </div>
     <p class="qty-preview" id="qty-preview">0 kcal · 0g protein</p>
     <button class="btn-primary" id="btn-confirm-add">Add to log</button>

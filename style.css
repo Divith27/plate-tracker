@@ -293,7 +293,7 @@ main{max-width:var(--maxw); margin:0 auto; padding:0 20px 100px;}
 .qty-serving{color:var(--gray); font-size:14px; margin:0 0 4px;}
 .unitrow{display:flex; gap:8px; justify-content:center; margin:0 0 16px;}
 .stepper{
-  display:flex; align-items:center; justify-content:center; gap:16px; margin:10px 0 18px;
+  display:flex; align-items:center; justify-content:center; gap:26px; margin:10px 0 18px;
 }
 .stepper__btn{
   width:44px; height:44px; border-radius:50%;
@@ -301,10 +301,15 @@ main{max-width:var(--maxw); margin:0 auto; padding:0 20px 100px;}
   font-size:20px; color:var(--blue); cursor:pointer;
   flex:0 0 auto;
 }
-.stepper__btn--small{
-  width:32px; height:32px; font-size:14px; color:var(--gray);
+.stepper__valwrap{display:inline-flex; align-items:baseline; gap:2px;}
+.stepper__val{
+  font-size:26px; width:64px; text-align:center; color:var(--black);
+  border:none; background:none; outline:none; padding:0;
 }
-.stepper__val{font-size:26px; min-width:64px; text-align:center; color:var(--black);}
+.stepper__val::-webkit-outer-spin-button, .stepper__val::-webkit-inner-spin-button{-webkit-appearance:none; margin:0;}
+.stepper__val{-moz-appearance:textfield;}
+.stepper__val:focus{color:var(--blue);}
+.stepper__unit{font-family:'Inter',sans-serif; font-size:14px; color:var(--gray); font-weight:600;}
 .qty-preview{text-align:center; color:var(--gray); font-size:14px; margin-bottom:6px;}
 
 /* ---------- Settings form ---------- */

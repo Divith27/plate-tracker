@@ -276,10 +276,9 @@
     qtyServingLabel: $("qty-serving-label"),
     qtyUnitrow: $("qty-unitrow"),
     qtyMinus: $("qty-minus"),
-    qtyMinusSmall: $("qty-minus-small"),
     qtyPlus: $("qty-plus"),
-    qtyPlusSmall: $("qty-plus-small"),
     qtyVal: $("qty-val"),
+    qtyUnitSuffix: $("qty-unit-suffix"),
     qtyPreview: $("qty-preview"),
     btnConfirmAdd: $("btn-confirm-add")
   };
@@ -625,11 +624,9 @@
   }
 
   // ---------------- Quantity sheet ----------------
-  var SERVING_STEP_BIG = 0.5;
-  var SERVING_STEP_SMALL = 0.25;
+  var SERVING_STEP = 0.5;
   var SERVING_MIN = 0.25;
-  var GRAMS_STEP_BIG = 25;
-  var GRAMS_STEP_SMALL = 5;
+  var GRAMS_STEP = 25;
   var GRAMS_MIN = 5;
 
   function parseServingGrams(servingText) {
@@ -676,8 +673,16 @@
     return state.pendingQty;
   }
 
+  // Pulls whatever the user has typed into the input into state, so typing and the +/- buttons never fight each other.
+  function syncPendingFromInput() {
+    var v = parseFloat(els.qtyVal.value);
+    if (isNaN(v)) return;
+    if (state.qtyUnit === "grams") state.pendingGrams = v; else state.pendingQty = v;
+  }
+
   function updateQtyDisplay() {
-    els.qtyVal.textContent = state.qtyUnit === "grams" ? (state.pendingGrams + "g") : state.pendingQty;
+    els.qtyVal.value = state.qtyUnit === "grams" ? state.pendingGrams : state.pendingQty;
+    els.qtyUnitSuffix.textContent = state.qtyUnit === "grams" ? "g" : "";
     updateQtyPreview();
   }
 
@@ -686,23 +691,46 @@
     els.qtyPreview.textContent = Math.round(f.kcal * mult) + " kcal · " + Math.round(f.protein * mult) + "g protein";
   }
 
-  function stepQty(bigStep, direction) {
+  els.qtyVal.addEventListener("input", function () {
+    syncPendingFromInput();
+    updateQtyPreview(); // don't touch .value here, it would fight the user's typing/cursor
+  });
+
+  els.qtyVal.addEventListener("blur", function () {
     if (state.qtyUnit === "grams") {
-      var gStep = (bigStep ? GRAMS_STEP_BIG : GRAMS_STEP_SMALL) * direction;
-      state.pendingGrams = Math.max(GRAMS_MIN, state.pendingGrams + gStep);
+      state.pendingGrams = Math.max(GRAMS_MIN, roundQty(state.pendingGrams || GRAMS_MIN));
     } else {
-      var sStep = (bigStep ? SERVING_STEP_BIG : SERVING_STEP_SMALL) * direction;
-      state.pendingQty = Math.max(SERVING_MIN, roundQty(state.pendingQty + sStep));
+      state.pendingQty = Math.max(SERVING_MIN, roundQty(state.pendingQty || SERVING_MIN));
     }
     updateQtyDisplay();
-  }
+  });
 
-  els.qtyMinus.addEventListener("click", function () { stepQty(true, -1); });
-  els.qtyMinusSmall.addEventListener("click", function () { stepQty(false, -1); });
-  els.qtyPlus.addEventListener("click", function () { stepQty(true, 1); });
-  els.qtyPlusSmall.addEventListener("click", function () { stepQty(false, 1); });
+  els.qtyMinus.addEventListener("click", function () {
+    syncPendingFromInput();
+    if (state.qtyUnit === "grams") {
+      state.pendingGrams = Math.max(GRAMS_MIN, state.pendingGrams - GRAMS_STEP);
+    } else {
+      state.pendingQty = Math.max(SERVING_MIN, roundQty(state.pendingQty - SERVING_STEP));
+    }
+    updateQtyDisplay();
+  });
+  els.qtyPlus.addEventListener("click", function () {
+    syncPendingFromInput();
+    if (state.qtyUnit === "grams") {
+      state.pendingGrams = state.pendingGrams + GRAMS_STEP;
+    } else {
+      state.pendingQty = roundQty(state.pendingQty + SERVING_STEP);
+    }
+    updateQtyDisplay();
+  });
 
   els.btnConfirmAdd.addEventListener("click", function () {
+    syncPendingFromInput();
+    if (state.qtyUnit === "grams") {
+      state.pendingGrams = Math.max(GRAMS_MIN, roundQty(state.pendingGrams || GRAMS_MIN));
+    } else {
+      state.pendingQty = Math.max(SERVING_MIN, roundQty(state.pendingQty || SERVING_MIN));
+    }
     var f = state.pendingFood, mult = currentQtyMultiplier();
     var servingLabel = state.qtyUnit === "grams" ? (state.pendingGrams + "g") : (state.pendingQty + " × " + f.serving);
     var entry = {
