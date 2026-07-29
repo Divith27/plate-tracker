@@ -274,8 +274,11 @@
     btnCloseQty: $("btn-close-qty"),
     qtyFoodName: $("qty-food-name"),
     qtyServingLabel: $("qty-serving-label"),
+    qtyUnitrow: $("qty-unitrow"),
     qtyMinus: $("qty-minus"),
+    qtyMinusSmall: $("qty-minus-small"),
     qtyPlus: $("qty-plus"),
+    qtyPlusSmall: $("qty-plus-small"),
     qtyVal: $("qty-val"),
     qtyPreview: $("qty-preview"),
     btnConfirmAdd: $("btn-confirm-add")
@@ -622,42 +625,94 @@
   }
 
   // ---------------- Quantity sheet ----------------
+  var SERVING_STEP_BIG = 0.5;
+  var SERVING_STEP_SMALL = 0.25;
+  var SERVING_MIN = 0.25;
+  var GRAMS_STEP_BIG = 25;
+  var GRAMS_STEP_SMALL = 5;
+  var GRAMS_MIN = 5;
+
+  function parseServingGrams(servingText) {
+    var m = /([\d.]+)\s*(g|ml)\b/i.exec(servingText || "");
+    return m ? parseFloat(m[1]) : null;
+  }
+
+  function roundQty(n) {
+    return Math.round(n * 100) / 100; // avoid float drift like 0.1 + 0.2
+  }
+
   function openQtyForFood(food) {
     state.pendingFood = food;
     state.pendingQty = 1;
+    state.qtyUnit = "serving";
+    state.pendingGramsBase = parseServingGrams(food.serving);
+    state.pendingGrams = state.pendingGramsBase || 100;
     els.qtyFoodName.textContent = food.name;
     els.qtyServingLabel.textContent = "1 serving = " + food.serving;
-    els.qtyVal.textContent = "1";
-    updateQtyPreview();
+    renderQtyUnitChips();
+    updateQtyDisplay();
     openSheet(els.sheetQty);
   }
 
-  function updateQtyPreview() {
-    var f = state.pendingFood, q = state.pendingQty;
-    els.qtyPreview.textContent = Math.round(f.kcal * q) + " kcal · " + Math.round(f.protein * q) + "g protein";
+  function renderQtyUnitChips() {
+    els.qtyUnitrow.innerHTML = "";
+    if (!state.pendingGramsBase) { els.qtyUnitrow.style.display = "none"; return; }
+    els.qtyUnitrow.style.display = "flex";
+    [{ id: "serving", label: "Servings" }, { id: "grams", label: "Grams" }].forEach(function (opt) {
+      var btn = document.createElement("button");
+      btn.className = "chip" + (state.qtyUnit === opt.id ? " is-active" : "");
+      btn.textContent = opt.label;
+      btn.addEventListener("click", function () {
+        state.qtyUnit = opt.id;
+        renderQtyUnitChips();
+        updateQtyDisplay();
+      });
+      els.qtyUnitrow.appendChild(btn);
+    });
   }
 
-  els.qtyMinus.addEventListener("click", function () {
-    state.pendingQty = Math.max(0.5, state.pendingQty - 0.5);
-    els.qtyVal.textContent = state.pendingQty;
+  function currentQtyMultiplier() {
+    if (state.qtyUnit === "grams") return state.pendingGrams / state.pendingGramsBase;
+    return state.pendingQty;
+  }
+
+  function updateQtyDisplay() {
+    els.qtyVal.textContent = state.qtyUnit === "grams" ? (state.pendingGrams + "g") : state.pendingQty;
     updateQtyPreview();
-  });
-  els.qtyPlus.addEventListener("click", function () {
-    state.pendingQty = state.pendingQty + 0.5;
-    els.qtyVal.textContent = state.pendingQty;
-    updateQtyPreview();
-  });
+  }
+
+  function updateQtyPreview() {
+    var f = state.pendingFood, mult = currentQtyMultiplier();
+    els.qtyPreview.textContent = Math.round(f.kcal * mult) + " kcal · " + Math.round(f.protein * mult) + "g protein";
+  }
+
+  function stepQty(bigStep, direction) {
+    if (state.qtyUnit === "grams") {
+      var gStep = (bigStep ? GRAMS_STEP_BIG : GRAMS_STEP_SMALL) * direction;
+      state.pendingGrams = Math.max(GRAMS_MIN, state.pendingGrams + gStep);
+    } else {
+      var sStep = (bigStep ? SERVING_STEP_BIG : SERVING_STEP_SMALL) * direction;
+      state.pendingQty = Math.max(SERVING_MIN, roundQty(state.pendingQty + sStep));
+    }
+    updateQtyDisplay();
+  }
+
+  els.qtyMinus.addEventListener("click", function () { stepQty(true, -1); });
+  els.qtyMinusSmall.addEventListener("click", function () { stepQty(false, -1); });
+  els.qtyPlus.addEventListener("click", function () { stepQty(true, 1); });
+  els.qtyPlusSmall.addEventListener("click", function () { stepQty(false, 1); });
 
   els.btnConfirmAdd.addEventListener("click", function () {
-    var f = state.pendingFood, q = state.pendingQty;
+    var f = state.pendingFood, mult = currentQtyMultiplier();
+    var servingLabel = state.qtyUnit === "grams" ? (state.pendingGrams + "g") : (state.pendingQty + " × " + f.serving);
     var entry = {
       id: Date.now() + "_" + Math.random().toString(36).slice(2, 7),
       name: f.name,
-      servingLabel: q + " × " + f.serving,
-      kcal: f.kcal * q,
-      protein: f.protein * q,
-      carbs: f.carbs * q,
-      fat: f.fat * q,
+      servingLabel: servingLabel,
+      kcal: f.kcal * mult,
+      protein: f.protein * mult,
+      carbs: f.carbs * mult,
+      fat: f.fat * mult,
       time: new Date().toISOString()
     };
     todaysEntries().push(entry);
