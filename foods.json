@@ -63,6 +63,7 @@
     {"id": "toru_sabzi", "name": "Toru Sabzi (ridge gourd / turai)", "category": "sabzi", "serving": "1 katori (~150g)", "kcal": 90, "protein": 2, "carbs": 9, "fat": 5},
     {"id": "gilki_sabzi", "name": "Gilki Sabzi (ridge gourd, regional name)", "category": "sabzi", "serving": "1 katori (~150g)", "kcal": 90, "protein": 2, "carbs": 9, "fat": 5},
     {"id": "aloo_jeera", "name": "Aloo Jeera (dry aloo)", "category": "sabzi", "serving": "1 katori (~150g)", "kcal": 170, "protein": 3, "carbs": 25, "fat": 7},
+    {"id": "aloo_matar", "name": "Aloo Matar (dry, sukhi sabzi)", "category": "sabzi", "serving": "1 katori (~150g)", "kcal": 170, "protein": 5, "carbs": 24, "fat": 7},
     {"id": "moong_sabzi", "name": "Moong Sabzi (whole moong, dry)", "category": "sabzi", "serving": "1 katori (~150g)", "kcal": 155, "protein": 9, "carbs": 20, "fat": 4.5},
 
     {"id": "paneer_raw", "name": "Paneer (raw)", "category": "dairy_protein", "serving": "100g", "kcal": 265, "protein": 18, "carbs": 3.5, "fat": 21},
