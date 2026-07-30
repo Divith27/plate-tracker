@@ -175,6 +175,7 @@
     {"id": "cooking_oil", "name": "Cooking Oil", "category": "condiment", "serving": "1 tsp (~5g)", "kcal": 40, "protein": 0, "carbs": 0, "fat": 4.5},
     {"id": "peanut_butter", "name": "Peanut Butter", "category": "condiment", "serving": "1 tbsp (~16g)", "kcal": 95, "protein": 4, "carbs": 3, "fat": 8},
     {"id": "honey", "name": "Honey", "category": "condiment", "serving": "1 tbsp (~21g)", "kcal": 64, "protein": 0.1, "carbs": 17, "fat": 0},
+    {"id": "hersheys_hot_chocolate_powder", "name": "Hershey's Hot Chocolate (powder, estimated)", "category": "condiment", "serving": "1 tbsp (~10g)", "kcal": 40, "protein": 0.5, "carbs": 8, "fat": 0.5},
 
     {"id": "pizza_slice", "name": "Pizza (cheese, 1 slice)", "category": "dinner_rotation", "serving": "1 slice", "kcal": 250, "protein": 10, "carbs": 28, "fat": 11},
     {"id": "pasta_white_sauce", "name": "Pasta (white sauce)", "category": "dinner_rotation", "serving": "1 plate (~250g)", "kcal": 450, "protein": 12, "carbs": 55, "fat": 20},
@@ -254,6 +255,7 @@
     {"id": "wholetruth_peanut_cocoa", "name": "The Whole Truth Protein Bar - Peanut Cocoa", "category": "protein_brand", "serving": "1 bar (52g, 15g protein)", "kcal": 244, "protein": 15, "carbs": 21.4, "fat": 11},
     {"id": "wholetruth_hazelnut_20g", "name": "The Whole Truth 20g Protein Bar - Hazelnut Cocoa (estimated)", "category": "protein_brand", "serving": "1 bar (67g)", "kcal": 310, "protein": 20, "carbs": 25, "fat": 15},
     {"id": "wholetruth_mini", "name": "The Whole Truth Mini Protein Bar (any flavor)", "category": "protein_brand", "serving": "1 mini bar (27g)", "kcal": 129, "protein": 6, "carbs": 15, "fat": 6},
+    {"id": "wholetruth_whey_unflavoured", "name": "The Whole Truth Raw Whey Concentrate (Unflavoured)", "category": "protein_brand", "serving": "1 scoop (~34g, 26g protein)", "kcal": 130, "protein": 26, "carbs": 3, "fat": 2},
 
     {"id": "milkymist_skyr", "name": "Milky Mist Skyr High Protein Plain Yogurt", "category": "protein_brand", "serving": "100g", "kcal": 100, "protein": 11, "carbs": 10, "fat": 1.5},
 
