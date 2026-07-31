@@ -117,6 +117,7 @@
     {"id": "soya_milk", "name": "Soya Milk", "category": "dairy_protein", "serving": "1 glass (~250ml)", "kcal": 100, "protein": 7, "carbs": 8, "fat": 4},
     {"id": "whey_scoop", "name": "Whey Protein (1 scoop)", "category": "dairy_protein", "serving": "1 scoop (~30g)", "kcal": 120, "protein": 24, "carbs": 3, "fat": 1.5},
     {"id": "paneer_shrikhand", "name": "Shrikhand", "category": "dairy_protein", "serving": "1 katori (~100g)", "kcal": 220, "protein": 6, "carbs": 30, "fat": 8},
+    {"id": "paneer_veg_salad", "name": "Paneer Vegetable Salad", "category": "dairy_protein", "serving": "1 katori (~100g)", "kcal": 215, "protein": 10, "carbs": 9, "fat": 16},
 
     {"id": "roasted_chana", "name": "Roasted Chana", "category": "snack", "serving": "1 small bowl (~50g)", "kcal": 180, "protein": 10, "carbs": 27, "fat": 3},
     {"id": "sprouts_chaat", "name": "Sprouts Chaat", "category": "snack", "serving": "1 bowl (~150g)", "kcal": 160, "protein": 9, "carbs": 22, "fat": 4},
