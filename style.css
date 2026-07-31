@@ -11,6 +11,7 @@
   --danger: #D6303B;
   --radius: 2px;
   --maxw: 640px;
+  --kb-offset: 0px;
 }
 
 *{box-sizing:border-box;}
@@ -216,12 +217,12 @@ main{max-width:var(--maxw); margin:0 auto; padding:0 20px 100px;}
 .scrim.is-open{opacity:1; pointer-events:auto;}
 
 .sheet{
-  position:fixed; left:0; right:0; bottom:0;
+  position:fixed; left:0; right:0; bottom:var(--kb-offset);
   background:var(--white);
   border-radius:16px 16px 0 0;
   z-index:40;
   transform:translateY(100%);
-  transition:transform .25s ease;
+  transition:transform .25s ease, bottom .1s ease;
   max-height:85vh;
   display:flex; flex-direction:column;
 }

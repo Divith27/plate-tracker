@@ -539,10 +539,42 @@
     });
   }
 
+  function levenshtein(a, b) {
+    if (a === b) return 0;
+    var al = a.length, bl = b.length;
+    if (al === 0) return bl;
+    if (bl === 0) return al;
+    var prev = [];
+    for (var j = 0; j <= bl; j++) prev[j] = j;
+    for (var i = 1; i <= al; i++) {
+      var cur = [i];
+      for (var j2 = 1; j2 <= bl; j2++) {
+        var cost = a.charAt(i - 1) === b.charAt(j2 - 1) ? 0 : 1;
+        cur[j2] = Math.min(prev[j2] + 1, cur[j2 - 1] + 1, prev[j2 - 1] + cost);
+      }
+      prev = cur;
+    }
+    return prev[bl];
+  }
+
+  function fuzzyThreshold(len) {
+    if (len <= 3) return 0; // too short to fuzz safely, require exact substring
+    if (len <= 6) return 1;
+    if (len <= 10) return 2;
+    return 3;
+  }
+
   function matchesQuery(name, query) {
     var haystack = name.toLowerCase();
     var words = query.split(/\s+/).filter(Boolean);
-    return words.every(function (w) { return haystack.indexOf(w) !== -1; });
+    var nameWords = null; // computed lazily, only if a word needs the fuzzy fallback
+    return words.every(function (w) {
+      if (haystack.indexOf(w) !== -1) return true;
+      var maxDist = fuzzyThreshold(w.length);
+      if (maxDist === 0) return false;
+      if (!nameWords) nameWords = haystack.split(/[\s/(),.-]+/).filter(Boolean);
+      return nameWords.some(function (nw) { return levenshtein(w, nw) <= maxDist; });
+    });
   }
 
   var searchDebounce = null;
@@ -1091,6 +1123,20 @@
     window.addEventListener("load", function () {
       navigator.serviceWorker.register("sw.js").catch(function () {});
     });
+  }
+
+  // Keep bottom sheets above the on-screen keyboard: on iOS the layout viewport
+  // doesn't shrink when the keyboard opens, so a fixed bottom:0 sheet ends up
+  // partly hidden behind it. Track the gap via visualViewport and lift the sheet.
+  if (window.visualViewport) {
+    var vv = window.visualViewport;
+    var syncKeyboardOffset = function () {
+      var offset = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+      document.documentElement.style.setProperty("--kb-offset", offset + "px");
+    };
+    vv.addEventListener("resize", syncKeyboardOffset);
+    vv.addEventListener("scroll", syncKeyboardOffset);
+    syncKeyboardOffset();
   }
 
   renderDashboard();
