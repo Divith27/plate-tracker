@@ -44,6 +44,7 @@
     {"id": "ragi_roti", "name": "Ragi Roti / Rotla", "category": "staple", "serving": "1 piece (~50g)", "kcal": 170, "protein": 4, "carbs": 33, "fat": 2},
     {"id": "jowar_roti", "name": "Jowar Roti / Bhakri", "category": "staple", "serving": "1 piece (~50g)", "kcal": 180, "protein": 5, "carbs": 33, "fat": 3},
     {"id": "bajra_roti", "name": "Bajra Roti / Rotla", "category": "staple", "serving": "1 piece (~50g)", "kcal": 185, "protein": 5.5, "carbs": 30, "fat": 4.5},
+    {"id": "doodhi_bhakri", "name": "Doodhi Bhakri (multigrain: besan, jowar, rice flour)", "category": "staple", "serving": "1 piece (~90g)", "kcal": 200, "protein": 6, "carbs": 30, "fat": 6.5},
     {"id": "ragi_porridge", "name": "Ragi Porridge (Ambli / Mudde)", "category": "staple", "serving": "1 bowl (~200g)", "kcal": 150, "protein": 4, "carbs": 28, "fat": 2},
     {"id": "ragi_malt", "name": "Ragi Malt (drink)", "category": "beverage", "serving": "1 glass (~200ml)", "kcal": 120, "protein": 3, "carbs": 22, "fat": 2},
 
