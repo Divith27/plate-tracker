@@ -57,6 +57,7 @@
     {"id": "black_chana_sabzi", "name": "Kala Chana Sabzi", "category": "dal_legume", "serving": "1 katori (~150g)", "kcal": 190, "protein": 10, "carbs": 26, "fat": 5},
     {"id": "sambar", "name": "Sambar", "category": "dal_legume", "serving": "1 katori (~150g)", "kcal": 110, "protein": 5, "carbs": 15, "fat": 3},
     {"id": "soy_chunks_sabzi", "name": "Soy Chunks Sabzi", "category": "dal_legume", "serving": "1 katori (~150g)", "kcal": 165, "protein": 16, "carbs": 12, "fat": 6},
+    {"id": "soya_veg_salad", "name": "Soya Bean Veg Salad (cucumber, tomato, spinach)", "category": "dal_legume", "serving": "1 katori (~150g)", "kcal": 140, "protein": 9, "carbs": 8, "fat": 9},
     {"id": "sprouts", "name": "Sprouts (boiled)", "category": "dal_legume", "serving": "1 katori (~100g)", "kcal": 100, "protein": 7, "carbs": 17, "fat": 0.5},
     {"id": "matki_usal", "name": "Matki Usal (sprouted moth beans curry)", "category": "dal_legume", "serving": "1 katori (~150g)", "kcal": 170, "protein": 9, "carbs": 22, "fat": 5},
     {"id": "misal", "name": "Misal (curry only)", "category": "dal_legume", "serving": "1 bowl (~200g)", "kcal": 260, "protein": 12, "carbs": 28, "fat": 11},
