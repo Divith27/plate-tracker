@@ -1,4 +1,4 @@
-var CACHE_NAME = "plate-cache-v31";
+var CACHE_NAME = "plate-cache-v32";
 var SHELL = [
   "./",
   "./index.html",
